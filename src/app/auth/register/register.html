@@ -1,50 +1,66 @@
-<div class="auth-container">
+<div class="auth-wrapper">
+  <div class="auth-card">
 
-  <h2>User Registration</h2>
+    <h2>User Registration</h2>
 
-  <form [formGroup]="registerForm" (ngSubmit)="register()">
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
 
-    <!-- Username -->
-    <label>Name</label>
-    <input type="text" formControlName="username" placeholder="Name" />
-    <small class="error"
-      *ngIf="registerForm.get('username')?.touched &&
-             registerForm.get('username')?.hasError('required')">
-      Name is required
-    </small>
+      <!-- Name -->
+      <div class="form-group">
+        <input
+          type="text"
+          formControlName="username"
+          required
+          placeholder=" "
+        />
+        <label>Name</label>
 
-    <!-- Email -->
-    <label>Email</label>
-    <input type="email" formControlName="email" placeholder="Email" />
-    <small class="error"
-      *ngIf="registerForm.get('email')?.touched &&
-             registerForm.get('email')?.hasError('required')">
-      Email is required
-    </small>
-    <small class="error"
-      *ngIf="registerForm.get('email')?.touched &&
-             registerForm.get('email')?.hasError('email')">
-      Enter a valid email address
-    </small>
+        <small class="error"
+          *ngIf="registerForm.get('username')?.touched &&
+                 registerForm.get('username')?.hasError('required')">
+          Name is required
+        </small>
+      </div>
 
-    <!-- Password -->
-    <label>Password</label>
-    <input type="password" formControlName="password" placeholder="Password" />
-    <small class="error"
-      *ngIf="registerForm.get('password')?.touched &&
-             registerForm.get('password')?.hasError('required')">
-      Password is required
-    </small>
-    <small class="error"
-      *ngIf="registerForm.get('password')?.touched &&
-             registerForm.get('password')?.hasError('minlength')">
-      Password must be at least 6 characters
-    </small>
+      <!-- Email -->
+      <div class="form-group">
+        <input
+          type="email"
+          formControlName="email"
+          required
+          placeholder=" "
+        />
+        <label>Email</label>
 
-    <button type="submit">Register</button>
+        <small class="error"
+          *ngIf="registerForm.get('email')?.touched &&
+                 registerForm.get('email')?.hasError('email')">
+          Enter a valid email
+        </small>
+      </div>
 
-  </form>
+      <!-- Password -->
+      <div class="form-group">
+        <input
+          type="password"
+          formControlName="password"
+          required
+          placeholder=" "
+        />
+        <label>Password</label>
 
-  <p class="message">{{ message }}</p>
+        <small class="error"
+          *ngIf="registerForm.get('password')?.touched &&
+                 registerForm.get('password')?.hasError('minlength')">
+          Minimum 6 characters
+        </small>
+      </div>
 
+      <button type="submit">Register</button>
+
+    </form>
+
+    <p class="message">{{ message }}</p>
+
+  </div>
 </div>

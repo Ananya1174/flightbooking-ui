@@ -1,36 +1,55 @@
-<div class="auth-container">
+<div class="auth-wrapper">
+  <div class="auth-card">
 
-  <h2>Login</h2>
+    <h2>Login</h2>
 
-  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
 
-    <!-- Email -->
-    <label>Email</label>
-    <input type="email" formControlName="email" placeholder="Email" />
-    <small class="error"
-      *ngIf="loginForm.get('email')?.touched &&
-             loginForm.get('email')?.hasError('required')">
-      Email is required
-    </small>
-    <small class="error"
-      *ngIf="loginForm.get('email')?.touched &&
-             loginForm.get('email')?.hasError('email')">
-      Enter a valid email
-    </small>
+      <!-- Email -->
+      <div class="form-group">
+        <input
+          type="email"
+          formControlName="email"
+          required
+          placeholder=" "
+        />
+        <label>Email</label>
 
-    <!-- Password -->
-    <label>Password</label>
-    <input type="password" formControlName="password" placeholder="Password" />
-    <small class="error"
-      *ngIf="loginForm.get('password')?.touched &&
-             loginForm.get('password')?.hasError('required')">
-      Password is required
-    </small>
+        <small class="error"
+          *ngIf="loginForm.get('email')?.touched &&
+                 loginForm.get('email')?.hasError('required')">
+          Email is required
+        </small>
 
-    <button type="submit">Login</button>
+        <small class="error"
+          *ngIf="loginForm.get('email')?.touched &&
+                 loginForm.get('email')?.hasError('email')">
+          Enter a valid email
+        </small>
+      </div>
 
-  </form>
+      <!-- Password -->
+      <div class="form-group">
+        <input
+          type="password"
+          formControlName="password"
+          required
+          placeholder=" "
+        />
+        <label>Password</label>
 
-  <p class="message">{{ message }}</p>
+        <small class="error"
+          *ngIf="loginForm.get('password')?.touched &&
+                 loginForm.get('password')?.hasError('required')">
+          Password is required
+        </small>
+      </div>
 
+      <button type="submit">Login</button>
+
+    </form>
+
+    <p class="message">{{ message }}</p>
+
+  </div>
 </div>
