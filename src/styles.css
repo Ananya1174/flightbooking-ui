@@ -1,15 +1,20 @@
+html, body {
+  height: 100%;
+}
+
 body {
   margin: 0;
-  min-height: 100vh;
   font-family: 'Inter', 'Segoe UI', sans-serif;
 
-  /* Background image */
-  background:
+  background-image:
     linear-gradient(
       rgba(15, 23, 42, 0.65),
       rgba(15, 23, 42, 0.65)
     ),
-    url('/assets/bg-flight.jpg') center / cover no-repeat fixed;
+    url("assets/bg-flight.jpg");
 
-  color: #0f172a;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
