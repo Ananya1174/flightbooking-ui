@@ -1,0 +1,18 @@
+<h2>User Registration</h2>
+
+<form [formGroup]="registerForm" (ngSubmit)="register()">
+
+  <input type="text" formControlName="username" placeholder="Name" />
+  <br><br>
+
+  <input type="email" formControlName="email" placeholder="Email" />
+  <br><br>
+
+  <input type="password" formControlName="password" placeholder="Password" />
+  <br><br>
+
+  <button type="submit">Register</button>
+
+</form>
+
+<p>{{ message }}</p>
