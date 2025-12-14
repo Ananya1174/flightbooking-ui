@@ -1,60 +1,122 @@
+/* PAGE BACKGROUND */
 .search-page {
   min-height: calc(100vh - 80px);
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding-top: 80px;
+  align-items: center;
+  padding: 40px;
+
+  background:
+    linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)),
+    url('/assets/bg-flight.jpg') center / cover no-repeat;
 }
 
+/* MAIN CARD */
 .search-card {
   width: 100%;
-  max-width: 900px;
-  padding: 40px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 22px;
-  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.45);
-}
-
-.search-card h2 {
-  font-size: 28px;
-  margin-bottom: 6px;
-  color: #0f172a;
-}
-
-.subtitle {
-  color: #64748b;
-  margin-bottom: 30px;
-}
-
-.search-row {
+  max-width: 1200px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: 380px 1fr;
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
 }
 
-.search-row label {
+/* LEFT PANEL */
+.search-left {
+  background: #1f2937;
+  color: white;
+  padding: 40px;
+}
+
+.search-left h2 {
+  margin-bottom: 25px;
+}
+
+.search-left label {
   display: block;
+  margin-top: 15px;
   font-size: 14px;
-  margin-bottom: 6px;
-  color: #374151;
+  color: #d1d5db;
 }
 
-.search-row input {
+.search-left input {
   width: 100%;
   padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #cbd5e1;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: none;
+  background: #374151;
+  color: white;
 }
 
-button {
-  margin-top: 30px;
+.search-left input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #fb7185;
+}
+
+.search-left button {
   width: 100%;
-  padding: 15px;
-  border-radius: 12px;
+  margin-top: 30px;
+  padding: 14px;
   border: none;
+  border-radius: 10px;
   background: linear-gradient(135deg, #f97316, #fb7185);
   color: white;
-  font-size: 16px;
   font-weight: 600;
+  cursor: pointer;
+}
+
+.error {
+  margin-top: 12px;
+  color: #fca5a5;
+}
+
+/* RIGHT PANEL */
+.search-right {
+  padding: 40px;
+  background: #f9fafb;
+}
+
+.search-right h2 {
+  margin-bottom: 25px;
+}
+
+/* FLIGHT RESULT CARD */
+.flight-card {
+  background: white;
+  border-radius: 14px;
+  padding: 20px 25px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+.flight-info h4 {
+  margin: 0 0 6px;
+}
+
+.flight-info small {
+  color: #6b7280;
+}
+
+.flight-price {
+  text-align: right;
+  font-size: 22px;
+  font-weight: 700;
+  color: #f97316;
+}
+
+.flight-price button {
+  display: block;
+  margin-top: 8px;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
   cursor: pointer;
 }

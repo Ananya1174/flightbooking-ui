@@ -1,64 +1,73 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule
+} from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-search-flight',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './search-flight.html',
+  styleUrl: './search-flight.css',
 })
 export class FlightSearchComponent {
 
-  origin = '';
-  destination = '';
-  travelDate = '';
-
+  searchForm: FormGroup;
   flights: any[] = [];
   loading = false;
   errorMessage = '';
 
-  // 🔹 API URL (via Gateway)
   private apiUrl = 'http://localhost:8087/flight-service/api/flight/search';
 
   constructor(
+    private fb: FormBuilder,
     private http: HttpClient,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    this.searchForm = this.fb.group({
+      origin: ['', Validators.required],
+      destination: ['', Validators.required],
+      travelDate: ['', Validators.required],
+    });
+  }
 
   searchFlights() {
+    if (this.searchForm.invalid) {
+      this.searchForm.markAllAsTouched();
+      return;
+    }
+
     this.loading = true;
     this.errorMessage = '';
     this.flights = [];
-
-    const body = {
-      origin: this.origin,
-      destination: this.destination,
-      travelDate: this.travelDate
-    };
 
     const token = localStorage.getItem('token');
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
 
-    this.http.post<any[]>(this.apiUrl, body, { headers })
-      .subscribe({
-        next: (res) => {
-          this.flights = res;
-          this.loading = false;
-
-          // 🔁 Manually trigger change detection if needed
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          this.errorMessage = err?.error?.message || 'Failed to search flights';
-          this.loading = false;
-          this.cdr.detectChanges();
-        }
-      });
+    this.http.post<any[]>(
+      this.apiUrl,
+      this.searchForm.value,
+      { headers }
+    ).subscribe({
+      next: (res) => {
+        this.flights = res || [];
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to fetch flights';
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 }

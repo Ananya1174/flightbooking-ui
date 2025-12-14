@@ -19,10 +19,12 @@ export class Auth {
   // AUTH APIs
   // ========================
 
+  // 🔴 FIX IS HERE
   signup(data: any) {
     return this.http.post(
       `${this.baseUrl}/auth-service/auth/signup`,
-      data
+      data,
+      { responseType: 'text' }   // ✅ IMPORTANT
     );
   }
 
@@ -39,12 +41,12 @@ export class Auth {
 
   saveToken(token: string) {
     localStorage.setItem('token', token);
-    this.loggedInSubject.next(true); // ✅ user logged in
+    this.loggedInSubject.next(true);
   }
 
   signout() {
     localStorage.removeItem('token');
-    this.loggedInSubject.next(false); // ✅ user logged out
+    this.loggedInSubject.next(false);
   }
 
   getToken(): string | null {

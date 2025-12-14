@@ -2,38 +2,61 @@
 
   <div class="search-card">
 
-    <h2>Search Flights</h2>
-    <p class="subtitle">
-      Find the best deals for your next journey
-    </p>
+    <!-- LEFT PANEL -->
+    <div class="search-left">
 
-    <form (ngSubmit)="searchFlights()" #flightForm="ngForm">
+      <h2>Your Search</h2>
 
-      <div class="search-row">
+      <form [formGroup]="searchForm" (ngSubmit)="searchFlights()">
 
-        <div>
-          <label>Origin</label>
-          <input type="text" [(ngModel)]="origin" name="origin" required />
+        <label>From</label>
+        <input type="text" formControlName="origin" placeholder="HYD" />
+
+        <label>To</label>
+        <input type="text" formControlName="destination" placeholder="DEL" />
+
+        <label>Travel Date</label>
+        <input type="date" formControlName="travelDate" />
+
+        <button type="submit" [disabled]="loading">
+          {{ loading ? 'Searching...' : 'Search Flights' }}
+        </button>
+
+        <p class="error" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </p>
+
+      </form>
+
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="search-right">
+
+      <h2>Available Flights</h2>
+
+      <p *ngIf="!loading && flights.length === 0">
+        No flights found. Try searching.
+      </p>
+
+      <div class="flight-card" *ngFor="let flight of flights">
+
+        <div class="flight-info">
+          <h4>{{ flight.airlineName }}</h4>
+          <p>{{ flight.origin }} → {{ flight.destination }}</p>
+          <small>
+            {{ flight.departureTime }} – {{ flight.arrivalTime }}
+          </small>
         </div>
 
-        <div>
-          <label>Destination</label>
-          <input type="text" [(ngModel)]="destination" name="destination" required />
-        </div>
-
-        <div>
-          <label>Travel Date</label>
-          <input type="date" [(ngModel)]="travelDate" name="travelDate" required />
+        <div class="flight-price">
+          ₹{{ flight.price }}
+          <button>Book</button>
         </div>
 
       </div>
 
-      <button type="submit" [disabled]="flightForm.invalid || loading">
-        {{ loading ? 'Searching...' : 'Search Flights' }}
-      </button>
-
-    </form>
-    
+    </div>
 
   </div>
 

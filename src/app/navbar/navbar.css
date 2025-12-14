@@ -1,40 +1,77 @@
+/* ====================================
+   NAVBAR CSS (Increased Contrast & Font Size)
+   ==================================== */
+
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 40px;
-  background: rgba(15, 23, 42, 0.35);
-  backdrop-filter: blur(6px);
+  /* Slightly increase padding for a more spacious feel */
+  padding: 20px 40px; 
+  
+  /* Increase background opacity for high contrast against the dark background image */
+  background: rgba(15, 23, 42, 0.9); /* Almost opaque dark blue/black */
+  
+  /* Keep a slight blur, but it's less critical now due to high opacity */
+  backdrop-filter: blur(4px); 
+  
+  /* Add a very subtle bottom shadow for lift */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); 
 }
 
 .logo {
-  font-size: 22px;
+  /* Increase font size for brand prominence */
+  font-size: 24px; 
   font-weight: 700;
-  color: #f8fafc;
+  /* Ensure the color is bright white for maximum contrast */
+  color: #ffffff; 
+  /* Add subtle text shadow to make it pop */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .nav-links {
   display: flex;
-  gap: 24px;
+  /* Increase gap slightly */
+  gap: 30px; 
   align-items: center;
+  list-style: none; /* Remove bullet points */
+  margin: 0;
+  padding: 0;
 }
 
 .nav-links a {
-  color: #e5e7eb;
+  /* Increase font size for readability */
+  font-size: 16px; 
+  color: #e5e7eb; /* Light gray for links */
   text-decoration: none;
   font-weight: 500;
+  padding: 5px 0; /* Add vertical padding for active state border */
+  transition: color 0.2s, border-bottom 0.2s;
 }
 
 .nav-links a:hover {
   color: #ffffff;
 }
 
+/* Style for the current active link (if using routerLinkActive="active") */
+.nav-links a.active {
+    color: var(--color-accent) !important; /* Use vibrant accent color */
+    font-weight: 700;
+    border-bottom: 2px solid var(--color-accent);
+}
+
 .logout-btn {
   padding: 8px 18px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   border: none;
-  background: #f97316;
+  /* Using the Accent color (Orange) for the Sign Out action */
+  background: var(--color-accent); 
   color: white;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: var(--color-accent-light);
 }

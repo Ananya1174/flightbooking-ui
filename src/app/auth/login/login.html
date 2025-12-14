@@ -29,6 +29,7 @@
         <label>Password</label>
         <input type="password" formControlName="password" />
 
+        
         <small class="error"
           *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
           Password is required
