@@ -1,4 +1,6 @@
-/* PAGE BACKGROUND */
+/* ===============================
+   PAGE BACKGROUND
+   =============================== */
 .search-page {
   min-height: calc(100vh - 80px);
   display: flex;
@@ -7,73 +9,87 @@
   padding: 40px;
 
   background:
-    linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)),
+    linear-gradient(rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.55)),
     url('/assets/bg-flight.jpg') center / cover no-repeat;
 }
 
-/* MAIN CARD */
+/* ===============================
+   MAIN CARD
+   =============================== */
 .search-card {
   width: 100%;
   max-width: 1200px;
   display: grid;
   grid-template-columns: 380px 1fr;
   background: white;
-  border-radius: 18px;
+  border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
 }
 
-/* LEFT PANEL */
+/* ===============================
+   LEFT PANEL (LIGHT DARK)
+   =============================== */
 .search-left {
-  background: #1f2937;
-  color: white;
+  background: linear-gradient(180deg, #334155, #475569);
+  color: #f8fafc;
   padding: 40px;
 }
 
 .search-left h2 {
   margin-bottom: 25px;
+  font-size: 22px;
+  font-weight: 700;
 }
 
 .search-left label {
   display: block;
-  margin-top: 15px;
+  margin-top: 16px;
   font-size: 14px;
-  color: #d1d5db;
+  color: #e5e7eb;
 }
 
 .search-left input {
   width: 100%;
   padding: 12px;
   margin-top: 6px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: none;
-  background: #374151;
-  color: white;
+  background: #e5e7eb;
+  color: #111827;
+  font-weight: 500;
 }
 
 .search-left input:focus {
   outline: none;
-  box-shadow: 0 0 0 2px #fb7185;
+  box-shadow: 0 0 0 3px rgba(251, 113, 133, 0.5);
 }
 
 .search-left button {
   width: 100%;
-  margin-top: 30px;
+  margin-top: 32px;
   padding: 14px;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   background: linear-gradient(135deg, #f97316, #fb7185);
   color: white;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
 }
 
-.error {
-  margin-top: 12px;
-  color: #fca5a5;
+.search-left button:disabled {
+  opacity: 0.7;
 }
 
-/* RIGHT PANEL */
+.error {
+  margin-top: 14px;
+  color: #fecaca;
+  font-size: 14px;
+}
+
+/* ===============================
+   RIGHT PANEL
+   =============================== */
 .search-right {
   padding: 40px;
   background: #f9fafb;
@@ -81,42 +97,97 @@
 
 .search-right h2 {
   margin-bottom: 25px;
+  font-size: 22px;
+  font-weight: 700;
 }
 
-/* FLIGHT RESULT CARD */
-.flight-card {
-  background: white;
-  border-radius: 14px;
-  padding: 20px 25px;
-  margin-bottom: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-}
-
-.flight-info h4 {
-  margin: 0 0 6px;
-}
-
-.flight-info small {
+.empty {
+  text-align: center;
+  padding: 40px 0;
   color: #6b7280;
 }
 
-.flight-price {
-  text-align: right;
-  font-size: 22px;
-  font-weight: 700;
-  color: #f97316;
+/* ===============================
+   FLIGHT CARD
+   =============================== */
+.flight-card {
+  background: white;
+  border-radius: 18px;
+  padding: 18px 24px;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
-.flight-price button {
-  display: block;
-  margin-top: 8px;
-  padding: 8px 18px;
-  border: none;
-  border-radius: 8px;
-  background: #2563eb;
-  color: white;
-  cursor: pointer;
+/* Airline */
+.airline-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 14px;
+}
+
+/* Flight Row */
+.flight-row {
+  display: grid;
+  grid-template-columns: 1.2fr 2fr 1.2fr 1fr;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Time Block */
+.time-block {
+  text-align: center;
+}
+
+.time {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.place {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* Route Block */
+.route-block {
+  text-align: center;
+}
+
+.trip-type {
+  font-size: 12px;
+  font-weight: 700;
+  color: #2563eb;
+  margin-bottom: 6px;
+}
+
+.route-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #f59e0b;
+  font-size: 16px;
+}
+
+.route-line .line {
+  width: 42px;
+  height: 2px;
+  background: #e5e7eb;
+}
+
+.duration {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: 6px;
+}
+
+/* Price */
+.price-block {
+  text-align: right;
+  font-size: 24px;
+  font-weight: 800;
+  color: #f97316;
 }

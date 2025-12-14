@@ -2,7 +2,7 @@
 
   <div class="search-card">
 
-    <!-- LEFT PANEL -->
+    <!-- LEFT PANEL : SEARCH FORM -->
     <div class="search-left">
 
       <h2>Your Search</h2>
@@ -10,16 +10,27 @@
       <form [formGroup]="searchForm" (ngSubmit)="searchFlights()">
 
         <label>From</label>
-        <input type="text" formControlName="origin" placeholder="HYD" />
+        <input
+          type="text"
+          formControlName="origin"
+          placeholder="HYD"
+        />
 
         <label>To</label>
-        <input type="text" formControlName="destination" placeholder="DEL" />
+        <input
+          type="text"
+          formControlName="destination"
+          placeholder="DEL"
+        />
 
         <label>Travel Date</label>
-        <input type="date" formControlName="travelDate" />
+        <input
+          type="date"
+          formControlName="travelDate"
+        />
 
         <button type="submit" [disabled]="loading">
-          {{ loading ? 'Searching...' : 'Search Flights' }}
+          {{ loading ? 'Searching…' : 'Search Flights' }}
         </button>
 
         <p class="error" *ngIf="errorMessage">
@@ -30,28 +41,67 @@
 
     </div>
 
-    <!-- RIGHT PANEL -->
+    <!-- RIGHT PANEL : RESULTS -->
     <div class="search-right">
 
       <h2>Available Flights</h2>
 
-      <p *ngIf="!loading && flights.length === 0">
+      <p class="empty" *ngIf="!loading && flights.length === 0">
         No flights found. Try searching.
       </p>
 
+      <!-- FLIGHT CARD -->
       <div class="flight-card" *ngFor="let flight of flights">
 
-        <div class="flight-info">
-          <h4>{{ flight.airlineName }}</h4>
-          <p>{{ flight.origin }} → {{ flight.destination }}</p>
-          <small>
-            {{ flight.departureTime }} – {{ flight.arrivalTime }}
-          </small>
+        <!-- Airline -->
+        <div class="airline-name">
+          {{ flight.airlineName }}
         </div>
 
-        <div class="flight-price">
-          ₹{{ flight.price }}
-          <button>Book</button>
+        <div class="flight-row">
+
+          <!-- Departure -->
+          <div class="time-block">
+            <div class="time">
+              {{ flight.departureTime | date:'HH:mm' }}
+            </div>
+            <div class="place">
+              {{ flight.origin }}
+            </div>
+          </div>
+
+          <!-- Route -->
+          <div class="route-block">
+            <div class="trip-type">
+              {{ flight.tripType }}
+            </div>
+
+            <div class="route-line">
+              <span class="line"></span>
+              ✈
+              <span class="line"></span>
+            </div>
+
+            <div class="duration">
+              {{ flight.duration || '2h 10m' }}
+            </div>
+          </div>
+
+          <!-- Arrival -->
+          <div class="time-block">
+            <div class="time">
+              {{ flight.arrivalTime | date:'HH:mm' }}
+            </div>
+            <div class="place">
+              {{ flight.destination }}
+            </div>
+          </div>
+
+          <!-- Price -->
+          <div class="price-block">
+            ₹{{ flight.price }}
+          </div>
+
         </div>
 
       </div>
