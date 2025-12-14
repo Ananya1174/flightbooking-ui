@@ -54,3 +54,10 @@
   font-weight: 500;
   color: green;
 }
+
+.error {
+  color: red;
+  font-size: 13px;
+  margin-top: 4px;
+  display: block;
+}
