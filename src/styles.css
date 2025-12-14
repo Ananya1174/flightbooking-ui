@@ -1,18 +1,15 @@
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Inter', 'Segoe UI', sans-serif;
-}
-
 body {
+  margin: 0;
   min-height: 100vh;
-  background: linear-gradient(
-    180deg,
-    #f4f7fb 0%,
-    #eef2f7 40%,
-    #e8edf4 100%
-  );
-  color: #1f2937;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+
+  /* Background image */
+  background:
+    linear-gradient(
+      rgba(15, 23, 42, 0.65),
+      rgba(15, 23, 42, 0.65)
+    ),
+    url('/assets/bg-flight.jpg') center / cover no-repeat fixed;
+
+  color: #0f172a;
 }

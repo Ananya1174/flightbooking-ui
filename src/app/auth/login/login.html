@@ -1,55 +1,49 @@
-<div class="auth-wrapper">
+<div class="auth-page">
+
   <div class="auth-card">
 
-    <h2>Login</h2>
+    <!-- LEFT: IMAGE TEXT -->
+    <div class="auth-left">
+      <h1>Your Gateway to<br />Unforgettable Journeys</h1>
+      <p>
+        Discover flights, plan trips, and explore destinations —
+        all in one place.
+      </p>
+    </div>
 
-    <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <!-- RIGHT: FORM -->
+    <div class="auth-right">
 
-      <!-- Email -->
-      <div class="form-group">
-        <input
-          type="email"
-          formControlName="email"
-          required
-          placeholder=" "
-        />
+      <h2>Login</h2>
+
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+
         <label>Email</label>
+        <input type="email" formControlName="email" />
 
         <small class="error"
-          *ngIf="loginForm.get('email')?.touched &&
-                 loginForm.get('email')?.hasError('required')">
-          Email is required
-        </small>
-
-        <small class="error"
-          *ngIf="loginForm.get('email')?.touched &&
-                 loginForm.get('email')?.hasError('email')">
+          *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
           Enter a valid email
         </small>
-      </div>
 
-      <!-- Password -->
-      <div class="form-group">
-        <input
-          type="password"
-          formControlName="password"
-          required
-          placeholder=" "
-        />
         <label>Password</label>
+        <input type="password" formControlName="password" />
 
         <small class="error"
-          *ngIf="loginForm.get('password')?.touched &&
-                 loginForm.get('password')?.hasError('required')">
+          *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
           Password is required
         </small>
-      </div>
 
-      <button type="submit">Login</button>
+        <button type="submit">
+          Login – Continue Exploring
+        </button>
 
-    </form>
+      </form>
 
-    <p class="message">{{ message }}</p>
+      <p class="message">{{ message }}</p>
+
+    </div>
 
   </div>
+
 </div>
