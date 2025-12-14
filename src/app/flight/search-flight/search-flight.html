@@ -1,40 +1,66 @@
-<h2>Search Flights</h2>
+<div class="search-container">
 
-<form (ngSubmit)="searchFlights()" #flightForm="ngForm">
+  <h2>Search Flights</h2>
 
-  <label>Origin</label>
-  <input type="text" [(ngModel)]="origin" name="origin" required />
+  <form (ngSubmit)="searchFlights()" #flightForm="ngForm">
 
+    <label>Origin</label>
+    <input
+      type="text"
+      [(ngModel)]="origin"
+      name="origin"
+      required
+    />
 
-  <label>Destination</label>
-  <input type="text" [(ngModel)]="destination" name="destination" required />
+    <label>Destination</label>
+    <input
+      type="text"
+      [(ngModel)]="destination"
+      name="destination"
+      required
+    />
 
-  <label>Travel Date</label>
-  <input type="date" [(ngModel)]="travelDate" name="travelDate" required />
+    <label>Travel Date</label>
+    <input
+      type="date"
+      [(ngModel)]="travelDate"
+      name="travelDate"
+      required
+    />
 
-  <button type="submit" [disabled]="flightForm.invalid || loading">
-    {{ loading ? 'Searching...' : 'Search' }}
-  </button>
+    <button type="submit" [disabled]="flightForm.invalid || loading">
+      {{ loading ? 'Searching...' : 'Search' }}
+    </button>
 
-</form>
+  </form>
 
-<hr />
+  <!-- Error -->
+  <p class="error-message" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </p>
 
-<!-- Error -->
-<p style="color:red" *ngIf="errorMessage">{{ errorMessage }}</p>
+  <!-- Results -->
+  <div *ngIf="flights.length > 0">
 
+    <h3>Available Flights</h3>
 
-<!-- Results -->
-<div *ngIf="flights.length > 0">
-  <h3>Available Flights</h3>
+    <div
+      class="flight-card"
+      *ngFor="let flight of flights"
+    >
+      <div>
+        <p><strong>{{ flight.airlineName }}</strong></p>
+        <p>Departure: {{ flight.departureTime }}</p>
+        <p>Arrival: {{ flight.arrivalTime }}</p>
+        <p>Seats Available: {{ flight.seatsAvailable }}</p>
+        <p>Trip Type: {{ flight.tripType }}</p>
+      </div>
 
-  <div *ngFor="let flight of flights" style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
-    <!-- <img [src]="flight.airlineLogoUrl" width="80" /> -->
-    <p><strong>{{ flight.airlineName }}</strong></p>
-    <p>Departure: {{ flight.departureTime }}</p>
-    <p>Arrival: {{ flight.arrivalTime }}</p>
-    <p>Price: ₹{{ flight.price }}</p>
-    <p>Seats Available: {{ flight.seatsAvailable }}</p>
-    <p>Trip Type: {{ flight.tripType }}</p>
+      <div class="price">
+        ₹{{ flight.price }}
+      </div>
+    </div>
+
   </div>
+
 </div>

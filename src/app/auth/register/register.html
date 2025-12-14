@@ -1,18 +1,22 @@
-<h2>User Registration</h2>
+<div class="auth-container">
 
-<form [formGroup]="registerForm" (ngSubmit)="register()">
+  <h2>User Registration</h2>
 
-  <input type="text" formControlName="username" placeholder="Name" />
-  <br><br>
+  <form [formGroup]="registerForm" (ngSubmit)="register()">
 
-  <input type="email" formControlName="email" placeholder="Email" />
-  <br><br>
+    <label>Name</label>
+    <input type="text" formControlName="username" placeholder="Name" />
 
-  <input type="password" formControlName="password" placeholder="Password" />
-  <br><br>
+    <label>Email</label>
+    <input type="email" formControlName="email" placeholder="Email" />
 
-  <button type="submit">Register</button>
+    <label>Password</label>
+    <input type="password" formControlName="password" placeholder="Password" />
 
-</form>
+    <button type="submit">Register</button>
 
-<p>{{ message }}</p>
+  </form>
+
+  <p class="message">{{ message }}</p>
+
+</div>

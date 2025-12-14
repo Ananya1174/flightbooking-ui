@@ -1,27 +1,25 @@
-<h2>Login</h2>
+<div class="auth-container">
 
-<form [formGroup]="loginForm" (ngSubmit)="login()">
+  <h2>Login</h2>
 
-  <div>
-    <input type="email" formControlName="email" placeholder="Email">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+
+    <label>Email</label>
+    <input type="email" formControlName="email" placeholder="Email" />
     <small *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
       Valid email required
     </small>
-  </div>
 
-  <br>
-
-  <div>
-    <input type="password" formControlName="password" placeholder="Password">
+    <label>Password</label>
+    <input type="password" formControlName="password" placeholder="Password" />
     <small *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
       Password required
     </small>
-  </div>
 
-  <br>
+    <button type="submit">Login</button>
 
-  <button type="submit">Login</button>
+  </form>
 
-</form>
+  <p class="message">{{ message }}</p>
 
-<p>{{ message }}</p>
+</div>

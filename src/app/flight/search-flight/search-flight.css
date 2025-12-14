@@ -23,3 +23,9 @@
   font-weight: bold;
   color: #1976d2;
 }
+
+.error-message {
+  color: red;
+  margin-top: 15px;
+  font-weight: 500;
+}
