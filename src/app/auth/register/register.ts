@@ -35,13 +35,9 @@ export class Register {
 
   register() {
     if (this.registerForm.invalid) {
-      this.message = 'Please fix validation errors';
-
-      // ✅ Trigger change detection after state update
-      this.cdr.detectChanges();
+      this.registerForm.markAllAsTouched();
       return;
     }
-
     this.auth.signup({
       ...this.registerForm.value,
     }).subscribe({

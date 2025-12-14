@@ -34,8 +34,7 @@ export class Login {
 
   login() {
     if (this.loginForm.invalid) {
-      this.message = 'Please enter valid credentials';
-      this.cdr.detectChanges(); // ✅ SAFE
+      this.loginForm.markAllAsTouched();
       return;
     }
 
