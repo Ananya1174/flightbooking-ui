@@ -1,31 +1,26 @@
 .search-container {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 25px;
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 30px;
 }
 
 .flight-card {
   display: flex;
   justify-content: space-between;
-  padding: 16px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  background: #f9f9f9;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  align-items: center;
+  padding: 18px 22px;
+  margin-bottom: 16px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
 }
 
-.flight-card img {
-  width: 70px;
+.flight-card strong {
+  color: #1e3a8a;
 }
 
 .price {
-  font-size: 18px;
-  font-weight: bold;
-  color: #1976d2;
-}
-
-.error-message {
-  color: red;
-  margin-top: 15px;
-  font-weight: 500;
+  font-size: 20px;
+  font-weight: 700;
+  color: #f97316;
 }

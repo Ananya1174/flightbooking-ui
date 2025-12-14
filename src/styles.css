@@ -1,1 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(
+    180deg,
+    #f4f7fb 0%,
+    #eef2f7 40%,
+    #e8edf4 100%
+  );
+  color: #1f2937;
+}

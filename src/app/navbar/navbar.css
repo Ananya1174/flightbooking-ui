@@ -2,43 +2,59 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 30px;
-  background: linear-gradient(90deg, #1976d2, #2196f3);
-  color: #fff;
+  padding: 16px 40px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .logo {
   font-size: 22px;
-  font-weight: 600;
+  font-weight: 700;
+  color: #1e3a8a; /* Indigo */
 }
 
 .nav-links {
-  list-style: none;
   display: flex;
-  gap: 18px;
+  gap: 22px;
   align-items: center;
 }
 
 .nav-links a {
   text-decoration: none;
-  color: #fff;
   font-weight: 500;
+  color: #374151;
+  position: relative;
 }
 
-.nav-links a:hover {
-  text-decoration: underline;
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #6366f1;
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
 }
 
 .logout-btn {
-  background: #fff;
-  color: #1976d2;
-  border: none;
   padding: 6px 14px;
-  border-radius: 4px;
-  cursor: pointer;
+  border-radius: 6px;
+  border: none;
+  background: #fee2e2;
+  color: #b91c1c;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .logout-btn:hover {
-  background: #e3f2fd;
+  background: #fecaca;
 }
