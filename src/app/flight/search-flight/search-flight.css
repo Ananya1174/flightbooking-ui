@@ -1,0 +1,25 @@
+.search-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 25px;
+}
+
+.flight-card {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  background: #f9f9f9;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.flight-card img {
+  width: 70px;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #1976d2;
+}
