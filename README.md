@@ -15,17 +15,17 @@ This application allows users to register, login, search flights, and view avail
   
 ## Flight Search
 
-•	Search flights by:
-  •	Origin
-  •	Destination
-  •	Travel Date
-•	Uses Reactive Forms for robust validation
-•	Communicates with backend services via API Gateway
-•	Sends Bearer Token for secured endpoints
+	•	Search flights by:
+		•	Origin
+		•	Destination
+		•	Travel Date
+	•	Uses Reactive Forms for robust validation
+	•	Communicates with backend services via API Gateway
+	•	Sends Bearer Token for secured endpoints
 
 ## Flight Results Display
 
-  •	Airline name
+  	•	Airline name
 	•	Departure time & location
 	•	Arrival time & location
 	•	Trip type (ONEWAY / ROUNDTRIP)
@@ -69,17 +69,17 @@ Example Endpoints:
   <img width="2870" height="1614" alt="image" src="https://github.com/user-attachments/assets/6c458cba-385b-4306-a138-3f754519ebdf" />
 
 
-  •	Login
+	•	Login
   
   <img width="2878" height="1624" alt="image" src="https://github.com/user-attachments/assets/b577506d-38bd-471b-b946-3eab20155d66" />
 
 
-  •	Search Flights
+	•	Search Flights
   
   <img width="2862" height="1468" alt="image" src="https://github.com/user-attachments/assets/46affc4f-dd6e-4e76-941c-49882065c2ce" />
 
 
-  •	No Flights Available
+	•	No Flights Available
   
   <img width="2852" height="1474" alt="image" src="https://github.com/user-attachments/assets/a6838384-19a7-4280-9178-769077a0ac21" />
 
