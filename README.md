@@ -1,8 +1,9 @@
-# FlightBookingUi
+# Flight Booking UI
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.3.
+A modern, responsive Flight Booking Frontend Application built using Angular.
+This application allows users to register, login, search flights, and view available flight details in a clean, user-friendly interface.
 
-## Development server
+## Features
 
 To start a local development server, run:
 
