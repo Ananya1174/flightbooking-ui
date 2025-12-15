@@ -15,13 +15,13 @@ This application allows users to register, login, search flights, and view avail
   
 ## Flight Search
 
-	•	Search flights by:
-  	  •	Origin
-	    •	Destination
-	    •	Travel Date
-	•	Uses Reactive Forms for robust validation
-	•	Communicates with backend services via API Gateway
-	•	Sends Bearer Token for secured endpoints
+•	Search flights by:
+  •	Origin
+  •	Destination
+  •	Travel Date
+•	Uses Reactive Forms for robust validation
+•	Communicates with backend services via API Gateway
+•	Sends Bearer Token for secured endpoints
 
 ## Flight Results Display
 
