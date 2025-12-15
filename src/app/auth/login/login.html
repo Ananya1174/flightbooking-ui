@@ -1,8 +1,6 @@
 <div class="auth-page">
 
   <div class="auth-card">
-
-    <!-- LEFT: IMAGE TEXT -->
     <div class="auth-left">
       <h1>Your Gateway to<br />Unforgettable Journeys</h1>
       <p>
@@ -11,7 +9,6 @@
       </p>
     </div>
 
-    <!-- RIGHT: FORM -->
     <div class="auth-right">
 
       <h2>Login</h2>
@@ -21,17 +18,15 @@
         <label>Email</label>
         <input type="email" formControlName="email" />
 
-        <small class="error"
-          *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+        <small class="error" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
           Enter a valid email
         </small>
 
         <label>Password</label>
         <input type="password" formControlName="password" />
 
-        
-        <small class="error"
-          *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+
+        <small class="error" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
           Password is required
         </small>
 

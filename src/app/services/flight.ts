@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class Flight {
   private baseUrl = 'http://localhost:8087';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   searchFlights(data: any) {
     const token = localStorage.getItem('token');

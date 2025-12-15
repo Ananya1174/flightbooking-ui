@@ -2,7 +2,6 @@
 
   <div class="search-card">
 
-    <!-- LEFT PANEL : SEARCH FORM -->
     <div class="search-left">
 
       <h2>Your Search</h2>
@@ -10,24 +9,13 @@
       <form [formGroup]="searchForm" (ngSubmit)="searchFlights()">
 
         <label>From</label>
-        <input
-          type="text"
-          formControlName="origin"
-          placeholder="HYD"
-        />
+        <input type="text" formControlName="origin" placeholder="HYD" />
 
         <label>To</label>
-        <input
-          type="text"
-          formControlName="destination"
-          placeholder="DEL"
-        />
+        <input type="text" formControlName="destination" placeholder="DEL" />
 
         <label>Travel Date</label>
-        <input
-          type="date"
-          formControlName="travelDate"
-        />
+        <input type="date" formControlName="travelDate" />
 
         <button type="submit" [disabled]="loading">
           {{ loading ? 'Searching…' : 'Search Flights' }}
@@ -41,7 +29,6 @@
 
     </div>
 
-    <!-- RIGHT PANEL : RESULTS -->
     <div class="search-right">
 
       <h2>Available Flights</h2>
@@ -50,17 +37,14 @@
         No flights found. Try searching.
       </p>
 
-      <!-- FLIGHT CARD -->
       <div class="flight-card" *ngFor="let flight of flights">
 
-        <!-- Airline -->
         <div class="airline-name">
           {{ flight.airlineName }}
         </div>
 
         <div class="flight-row">
 
-          <!-- Departure -->
           <div class="time-block">
             <div class="time">
               {{ flight.departureTime | date:'HH:mm' }}
@@ -70,7 +54,6 @@
             </div>
           </div>
 
-          <!-- Route -->
           <div class="route-block">
             <div class="trip-type">
               {{ flight.tripType }}
@@ -87,7 +70,6 @@
             </div>
           </div>
 
-          <!-- Arrival -->
           <div class="time-block">
             <div class="time">
               {{ flight.arrivalTime | date:'HH:mm' }}
@@ -97,7 +79,6 @@
             </div>
           </div>
 
-          <!-- Price -->
           <div class="price-block">
             ₹{{ flight.price }}
           </div>

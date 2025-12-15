@@ -13,18 +13,13 @@ export class Auth {
   private loggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
   loggedIn$ = this.loggedInSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  // ========================
-  // AUTH APIs
-  // ========================
-
-  // 🔴 FIX IS HERE
   signup(data: any) {
     return this.http.post(
       `${this.baseUrl}/auth-service/auth/signup`,
       data,
-      { responseType: 'text' }   // ✅ IMPORTANT
+      { responseType: 'text' }
     );
   }
 
@@ -34,10 +29,6 @@ export class Auth {
       data
     );
   }
-
-  // ========================
-  // TOKEN MANAGEMENT
-  // ========================
 
   saveToken(token: string) {
     localStorage.setItem('token', token);
@@ -52,10 +43,6 @@ export class Auth {
   getToken(): string | null {
     return localStorage.getItem('token');
   }
-
-  // ========================
-  // LOGIN STATE
-  // ========================
 
   isLoggedIn() {
     return this.loggedIn$;

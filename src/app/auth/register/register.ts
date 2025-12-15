@@ -25,7 +25,6 @@ export class Register {
     private auth: Auth,
     private cdr: ChangeDetectorRef
   ) {
-    // ✅ Safe form initialization
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -43,14 +42,10 @@ export class Register {
     }).subscribe({
       next: () => {
         this.message = 'Registration successful';
-
-        // ✅ Async update → trigger change detection
         this.cdr.detectChanges();
       },
       error: () => {
         this.message = 'Registration failed';
-
-        // ✅ Async error update → trigger change detection
         this.cdr.detectChanges();
       }
     });

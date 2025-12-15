@@ -25,7 +25,6 @@ export class Login {
     private auth: Auth,
     private cdr: ChangeDetectorRef
   ) {
-    // ✅ Form creation is safe in constructor
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -48,15 +47,11 @@ export class Login {
         console.log('LOGIN RESPONSE', res);
         this.auth.saveToken(res.token);
         this.message = 'Login successful';
-
-        // ✅ Correct place to trigger change detection
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('LOGIN ERROR', err);
         this.message = 'Invalid credentials';
-
-        // ✅ Correct place to trigger change detection
         this.cdr.detectChanges();
       }
     });

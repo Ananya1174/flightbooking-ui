@@ -1,10 +1,4 @@
-/* ====================================
-   AUTH PAGES (Login & Register) CSS
-   (Image on Left, Form on Right - High Contrast)
-   ==================================== */
-
 .auth-page {
-  /* min-height is calc(100vh - 80px) assuming 80px is your navbar height */
   min-height: calc(100vh - 80px);
   display: flex;
   justify-content: center;
@@ -16,37 +10,19 @@
   width: 100%;
   max-width: 1000px;
   display: grid;
-  /* Left side (image/info) slightly larger than the right side (form) */
-  grid-template-columns: 1.2fr 1fr; 
-  
-  /* The card background is white, and the left panel uses an image */
-  background: white; 
-  border-radius: var(--radius-xl); 
+  grid-template-columns: 1.2fr 1fr;
+  background: white;
+  border-radius: var(--radius-xl);
   overflow: hidden;
-  
-  /* Soft, prominent shadow to make the card float over the background */
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25); 
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
 }
 
-/* -------------------
-   LEFT SIDE: IMAGE + TEXT PANEL
-   ------------------- */
 .auth-left {
   padding: 50px;
-  
-  /* REVISED BACKGROUND DEFINITION */
   background:
-    /* Dark overlay (reduced opacity slightly from 0.75 to 0.65) */
-    linear-gradient(
-      rgba(15, 42, 68, 0.65), 
-      rgba(15, 42, 68, 0.65)
-    ),
-    /* *** CRITICAL FIX: REVISED PATH FOR ANGULAR ASSETS *** */
+    linear-gradient(rgba(15, 42, 68, 0.65),
+      rgba(15, 42, 68, 0.65)),
     url('../../../assets/bg-flight.jpg') center / cover no-repeat;
-    /* If that fails, try: url('/assets/bg-flight.jpg') 
-    If that fails, try: url('./assets/bg-flight.jpg')
-    */
-    
   color: #f8fafc;
 }
 
@@ -54,7 +30,7 @@
   font-size: 36px;
   margin-bottom: 20px;
   font-weight: 700;
-  color: white; 
+  color: white;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
@@ -64,12 +40,9 @@
   max-width: 380px;
 }
 
-/* -------------------
-   RIGHT SIDE: FORM PANEL (White Background)
-   ------------------- */
 .auth-right {
   padding: 50px 45px;
-  background: white; 
+  background: white;
 }
 
 .auth-right h2 {
@@ -97,32 +70,26 @@
 
 .auth-right input:focus {
   outline: none;
-  /* Use the Primary Light color for a clearer focus state */
-  border-color: var(--color-primary-light); 
+  border-color: var(--color-primary-light);
   box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.2);
 }
 
-/* -------------------
-   BUTTONS, ERRORS, MESSAGES
-   ------------------- */
 button {
   width: 100%;
   margin-top: 30px;
   padding: 14px;
-  border-radius: var(--radius-md); 
+  border-radius: var(--radius-md);
   border: none;
-  /* Retaining the Orange-Pink Gradient */
   background: linear-gradient(135deg, #f97316, #fb7185);
-  
   color: white;
   font-weight: 600;
   cursor: pointer;
-  transition: opacity 0.3s ease, box-shadow 0.3s ease; 
+  transition: opacity 0.3s ease, box-shadow 0.3s ease;
 }
 
 button:hover {
   opacity: 0.95;
-  box-shadow: 0 4px 15px rgba(251, 113, 133, 0.5); 
+  box-shadow: 0 4px 15px rgba(251, 113, 133, 0.5);
 }
 
 .error {
