@@ -19,7 +19,6 @@ This application allows users to register, login, search flights, and view avail
 	    •	Origin
 	    •	Destination
 	    •	Travel Date
-  
   •	Uses Reactive Forms for robust validation
   •	Communicates with backend services via API Gateway
   •	Sends Bearer Token for secured endpoints
@@ -51,6 +50,7 @@ This application allows users to register, login, search flights, and view avail
 The frontend communicates with backend microservices through an API Gateway.
 
 Example Endpoints:
+
 	•	POST /auth-service/auth/signup
 	•	POST /auth-service/auth/signin
 	•	POST /flight-service/api/flight/search
