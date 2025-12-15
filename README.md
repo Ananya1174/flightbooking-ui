@@ -1,59 +1,88 @@
-# FlightBookingUi
+# Flight Booking UI
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.3.
+A modern, responsive Flight Booking Frontend Application built using Angular.
+This application allows users to register, login, search flights, and view available flight details in a clean, user-friendly interface.
 
-## Development server
+## Features
 
-To start a local development server, run:
+## Authentication
 
-```bash
-ng serve
-```
+	•	User Registration with form validations
+	•	User Login using JWT-based authentication
+	•	Secure token handling using localStorage
+	•	Dynamic UI updates based on login state (Login / Logout)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+  
+## Flight Search
 
-## Code scaffolding
+•	Search flights by:
+  •	Origin
+  •	Destination
+  •	Travel Date
+•	Uses Reactive Forms for robust validation
+•	Communicates with backend services via API Gateway
+•	Sends Bearer Token for secured endpoints
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Flight Results Display
 
-```bash
-ng generate component component-name
-```
+  •	Airline name
+	•	Departure time & location
+	•	Arrival time & location
+	•	Trip type (ONEWAY / ROUNDTRIP)
+	•	Duration between flights
+	•	Price
+  
+## UI & Design
+	•	Modern card-based layout
+	•	Background image with overlay for readability
+	•	Responsive and readable color palette
+	•	Clean typography and spacing
+	•	Designed with real airline booking UX principles
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Authentication Flow
+	1.	User registers via Register page
+	2.	User logs in via Login page
+	3.	JWT token is stored in localStorage
+	4.	Token is attached as Authorization: Bearer <token> for secured APIs
+	5.	UI updates automatically using BehaviorSubject
 
-```bash
-ng generate --help
-```
+## API Integration
+The frontend communicates with backend microservices through an API Gateway.
 
-## Building
+Example Endpoints:
 
-To build the project run:
+	•	POST /auth-service/auth/signup
+	•	POST /auth-service/auth/signin
+	•	POST /flight-service/api/flight/search
 
-```bash
-ng build
-```
+## Validation & Error Handling
+	•	Client-side form validations using Angular Validators
+	•	Clear validation messages for each field
+	•	Graceful handling of:
+	  •	Unauthorized access
+	  •	No available flights
+	  •	Network/API failures
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Screens 
+	•	Register
+  
+  <img width="2870" height="1614" alt="image" src="https://github.com/user-attachments/assets/6c458cba-385b-4306-a138-3f754519ebdf" />
 
-## Running unit tests
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+  •	Login
+  
+  <img width="2878" height="1624" alt="image" src="https://github.com/user-attachments/assets/b577506d-38bd-471b-b946-3eab20155d66" />
 
-```bash
-ng test
-```
 
-## Running end-to-end tests
+  •	Search Flights
+  
+  <img width="2862" height="1468" alt="image" src="https://github.com/user-attachments/assets/46affc4f-dd6e-4e76-941c-49882065c2ce" />
 
-For end-to-end (e2e) testing, run:
 
-```bash
-ng e2e
-```
+  •	No Flights Available
+  
+  <img width="2852" height="1474" alt="image" src="https://github.com/user-attachments/assets/a6838384-19a7-4280-9178-769077a0ac21" />
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
-## Additional Resources
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
