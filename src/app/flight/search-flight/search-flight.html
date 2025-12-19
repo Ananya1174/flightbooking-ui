@@ -9,10 +9,21 @@
       <form [formGroup]="searchForm" (ngSubmit)="searchFlights()">
 
         <label>From</label>
-        <input type="text" formControlName="origin" placeholder="HYD" />
+        <select formControlName="origin">
+          <option value="" disabled selected>Select Origin</option>
+          <option *ngFor="let airport of airports" [value]="airport.code">
+            {{ airport.name }} ({{ airport.code }})
+          </option>
+        </select>
 
         <label>To</label>
-        <input type="text" formControlName="destination" placeholder="DEL" />
+        <select formControlName="destination">
+          <option value="" disabled selected>Select Destination</option>
+          <option *ngFor="let airport of airports" [value]="airport.code"
+            [disabled]="isDestinationDisabled(airport.code)">
+            {{ airport.name }} ({{ airport.code }})
+          </option>
+        </select>
 
         <label>Travel Date</label>
         <input type="date" formControlName="travelDate" />
@@ -82,6 +93,9 @@
           <div class="price-block">
             ₹{{ flight.price }}
           </div>
+          <button type="button" class="book-btn" (click)="goToBooking(flight)">
+            Book
+          </button>
 
         </div>
 

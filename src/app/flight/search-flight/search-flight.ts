@@ -7,6 +7,7 @@ import {
   ReactiveFormsModule
 } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-flight',
@@ -22,12 +23,23 @@ export class FlightSearchComponent {
   loading = false;
   errorMessage = '';
 
+  airports = [
+    { code: 'HYD', name: 'Hyderabad' },
+    { code: 'DEL', name: 'Delhi' },
+    { code: 'BLR', name: 'Bangalore' },
+    { code: 'MUM', name: 'Mumbai' },
+    { code: 'CHN', name: 'Chennai' },
+    { code: 'GOI', name: 'Goa' },
+    { code: 'PJB', name: 'Punjab' }
+  ];
+
   private apiUrl = 'http://localhost:8087/flight-service/api/flight/search';
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {
     this.searchForm = this.fb.group({
       origin: ['', Validators.required],
@@ -35,6 +47,15 @@ export class FlightSearchComponent {
       travelDate: ['', Validators.required],
     });
   }
+
+  isDestinationDisabled(code: string): boolean {
+    return this.searchForm.get('origin')?.value === code;
+  }
+  goToBooking(flight: any) {
+    console.log('FLIGHT OBJECT:', flight);
+  console.log('ID:', flight.id, 'FLIGHT_ID:', flight.flightId);
+  this.router.navigate(['/book', flight.flightId]);
+}
 
   searchFlights() {
     if (this.searchForm.invalid) {
@@ -70,4 +91,5 @@ export class FlightSearchComponent {
       }
     });
   }
+
 }

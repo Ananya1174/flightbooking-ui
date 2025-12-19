@@ -1,0 +1,66 @@
+<div class="booking-wrapper" *ngIf="flight">
+
+  <div class="booking-card">
+
+    <h2>Book Flight</h2>
+
+    <p><b>{{ flight.airlineName }}</b></p>
+    <p>{{ flight.origin }} → {{ flight.destination }}</p>
+    <p>Price per seat: ₹{{ flight.price }}</p>
+
+    <form [formGroup]="bookingForm">
+
+      <label>Number of Passengers</label>
+      <input
+        type="number"
+        formControlName="numSeats"
+        min="1"
+        (change)="onSeatCountChange()" />
+
+      <div
+        formArrayName="passengers"
+        *ngFor="let p of passengers.controls; let i = index">
+
+        <div [formGroupName]="i" class="passenger-card">
+
+          <h4>Passenger {{ i + 1 }}</h4>
+
+          <input placeholder="Name" formControlName="name" />
+          <input placeholder="Age" type="number" formControlName="age" />
+
+          <select formControlName="gender">
+            <option value="">Gender</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </select>
+
+          <input placeholder="Seat Number" formControlName="seatNumber" />
+
+          <select formControlName="mealPreference">
+            <option value="">Meal Preference</option>
+            <option value="VEG">VEG</option>
+            <option value="NON_VEG">NON_VEG</option>
+          </select>
+
+        </div>
+      </div>
+
+      <button
+        type="button"
+        (click)="confirmBooking()"
+        [disabled]="loading">
+        {{ loading ? 'Booking...' : 'Confirm Booking' }}
+      </button>
+
+    </form>
+
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <div *ngIf="bookingResponse" class="success">
+      <p><b>PNR:</b> {{ bookingResponse.pnr }}</p>
+      <p><b>Status:</b> {{ bookingResponse.status }}</p>
+    </div>
+
+  </div>
+
+</div>

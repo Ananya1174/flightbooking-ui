@@ -50,6 +50,22 @@
   color: #111827;
   font-weight: 500;
 }
+.search-left select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border-radius: 10px;
+  border: none;
+  background: #e5e7eb;
+  color: #111827;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.search-left select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(251, 113, 133, 0.5);
+}
 
 .search-left input:focus {
   outline: none;
