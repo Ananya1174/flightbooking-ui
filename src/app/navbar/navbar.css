@@ -1,58 +1,74 @@
 .navbar {
   height: 70px;
-  background-color: #0c316a;
-
+  background-color: #0b3575;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  padding: 0 24px;              /* reduced from large padding */
-  color: #fff;
-
+  padding: 0 24px;
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;                     /* 🔥 IMPORTANT */
-  width: 100%;
-
+  right: 0;
   z-index: 1000;
 }
 
-/* Logo */
 .logo {
   font-size: 22px;
   font-weight: bold;
-  white-space: nowrap;
+  color: #fff;
 }
 
-/* Nav links container */
+/* Nav container */
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 20px;
-
+  gap: 22px;
   margin: 0;
   padding: 0;
-
   align-items: center;
 }
 
-/* Nav links */
-.nav-links a {
-  position: relative;          /* 🔥 REQUIRED */
+/* COMMON STYLE for <a> and Sign Out <button> */
+.nav-links a,
+.nav-links .nav-link {
+  position: relative;
+  background: none;
+  border: none;
+
   color: #fff;
-  text-decoration: none;
   font-weight: 500;
-  white-space: nowrap;
+  font-size: inherit;
+  font-family: inherit;
+
   padding: 6px 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
 }
 
-/* Active underline */
+/* Hover */
+.nav-links a:hover,
+.nav-links .nav-link:hover {
+  opacity: 0.85;
+}
+
+/* Active underline (router links) */
 .nav-links a.active::after {
   content: '';
   position: absolute;
   left: 0;
-  bottom: -4px;                /* directly under text */
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background-color: #ffc107;
+}
+
+/* Hover underline for Sign Out */
+.nav-links .nav-link:hover::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
   width: 100%;
   height: 2px;
   background-color: #ffc107;

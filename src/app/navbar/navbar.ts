@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Auth } from '../services/auth';
 
 @Component({
@@ -13,7 +13,7 @@ import { Auth } from '../services/auth';
 export class Navbar {
   isLoggedIn = false;
 
-  constructor(private auth: Auth) {
+  constructor(private auth: Auth, private router: Router) {
     this.auth.isLoggedIn().subscribe(status => {
       this.isLoggedIn = status;
     });
@@ -21,5 +21,6 @@ export class Navbar {
 
   logout() {
     this.auth.signout();
+    this.router.navigate(['/login']);
   }
 }

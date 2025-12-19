@@ -2,8 +2,13 @@
   <div class="logo">Fly Ease</div>
 
   <ul class="nav-links">
+    <!-- Always visible -->
     <li>
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         Home
       </a>
     </li>
@@ -14,16 +19,24 @@
       </a>
     </li>
 
-    <li>
+    <!-- Logged OUT -->
+    <li *ngIf="!isLoggedIn">
       <a routerLink="/login" routerLinkActive="active">
         Login
       </a>
     </li>
 
-    <li>
+    <li *ngIf="!isLoggedIn">
       <a routerLink="/register" routerLinkActive="active">
         Register
       </a>
+    </li>
+
+    <!-- Logged IN -->
+    <li *ngIf="isLoggedIn">
+      <button class="nav-link" (click)="logout()">
+        Sign Out
+      </button>
     </li>
   </ul>
 </nav>

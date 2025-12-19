@@ -9,11 +9,10 @@ export class Auth {
 
   private baseUrl = 'http://localhost:8087';
 
-  // 🔐 Login state
   private loggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
   loggedIn$ = this.loggedInSubject.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   signup(data: any) {
     return this.http.post(
@@ -38,10 +37,6 @@ export class Auth {
   signout() {
     localStorage.removeItem('token');
     this.loggedInSubject.next(false);
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem('token');
   }
 
   isLoggedIn() {
