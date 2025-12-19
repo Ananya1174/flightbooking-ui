@@ -26,7 +26,7 @@
         </select>
 
         <label>Travel Date</label>
-        <input type="date" formControlName="travelDate" />
+        <input type="date" formControlName="travelDate" [min]="minDate"/>
 
         <button type="submit" [disabled]="loading">
           {{ loading ? 'Searching…' : 'Search Flights' }}

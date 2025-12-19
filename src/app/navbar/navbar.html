@@ -1,19 +1,29 @@
 <nav class="navbar">
-  <div class="logo">Flight Booking System</div>
+  <div class="logo">Fly Ease</div>
 
   <ul class="nav-links">
-    <li><a routerLink="/search">Search Flights</a></li>
-
-    <li *ngIf="!isLoggedIn">
-      <a routerLink="/login">Login</a>
+    <li>
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        Home
+      </a>
     </li>
 
-    <li *ngIf="!isLoggedIn">
-      <a routerLink="/register">Register</a>
+    <li>
+      <a routerLink="/search" routerLinkActive="active">
+        Search Flights
+      </a>
     </li>
 
-    <li *ngIf="isLoggedIn">
-      <button class="logout-btn" (click)="logout()">Sign Out</button>
+    <li>
+      <a routerLink="/login" routerLinkActive="active">
+        Login
+      </a>
+    </li>
+
+    <li>
+      <a routerLink="/register" routerLinkActive="active">
+        Register
+      </a>
     </li>
   </ul>
 </nav>

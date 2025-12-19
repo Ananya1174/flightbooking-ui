@@ -22,6 +22,7 @@ export class FlightSearchComponent {
   flights: any[] = [];
   loading = false;
   errorMessage = '';
+  minDate!: string;
 
   airports = [
     { code: 'HYD', name: 'Hyderabad' },
@@ -46,6 +47,8 @@ export class FlightSearchComponent {
       destination: ['', Validators.required],
       travelDate: ['', Validators.required],
     });
+    const today = new Date();
+  this.minDate = today.toISOString().split('T')[0];
   }
 
   isDestinationDisabled(code: string): boolean {
