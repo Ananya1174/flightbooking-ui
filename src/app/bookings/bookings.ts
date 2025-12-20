@@ -22,7 +22,8 @@ export class BookingsComponent implements OnInit {
   showActiveOnly = false;
   expandedPnr: string | null = null;
 
-  cancelPnr: string | null = null;
+  // dialog state
+  selectedBooking: any | null = null;
   cancelError: string | null = null;
 
   private baseUrl =
@@ -32,7 +33,7 @@ export class BookingsComponent implements OnInit {
     private http: HttpClient,
     private auth: Auth,
     private cdr: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnInit() {
     const email = this.auth.getUserEmail();
@@ -54,12 +55,7 @@ export class BookingsComponent implements OnInit {
     this.http.get<any[]>(`${this.baseUrl}/${email}`, { headers })
       .subscribe({
         next: res => {
-          // 🔥 precompute canCancel ONCE
-          this.allBookings = (res || []).map(b => ({
-            ...b,
-            canCancel: this.isWithin24Hours(b)
-          }));
-
+          this.allBookings = res || [];
           this.applyFilter();
           this.loading = false;
           this.cdr.detectChanges();
@@ -72,22 +68,10 @@ export class BookingsComponent implements OnInit {
       });
   }
 
-  private isWithin24Hours(booking: any): boolean {
-    if (booking.status !== 'ACTIVE') return false;
-
-    const createdAt = new Date(booking.createdAt).getTime();
-    const now = Date.now();
-    const hoursDiff = (now - createdAt) / (1000 * 60 * 60);
-
-    return hoursDiff <= 24;
-  }
-
   applyFilter() {
     this.filteredBookings = this.showActiveOnly
       ? this.allBookings.filter(b => b.status === 'ACTIVE')
       : [...this.allBookings];
-
-    this.cdr.detectChanges();
   }
 
   onToggleChange() {
@@ -98,19 +82,30 @@ export class BookingsComponent implements OnInit {
     this.expandedPnr = this.expandedPnr === pnr ? null : pnr;
   }
 
+  // ---------------- CANCEL FLOW ----------------
 
-  openCancelDialog(pnr: string) {
-    this.cancelPnr = pnr;
+  openCancelDialog(booking: any) {
+
+    // 🔴 within 24 hours → show restriction dialog
+    if (this.isWithin24HoursOfDeparture(booking)) {
+      this.cancelError =
+        'Cancellation not allowed within 24 hours of departure';
+      this.selectedBooking = null;
+      return;
+    }
+
+    // 🟢 allowed → show confirmation dialog
+    this.selectedBooking = booking;
     this.cancelError = null;
   }
 
   closeCancelDialog() {
-    this.cancelPnr = null;
+    this.selectedBooking = null;
     this.cancelError = null;
   }
 
   confirmCancelBooking() {
-    if (!this.cancelPnr) return;
+    if (!this.selectedBooking) return;
 
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
@@ -118,16 +113,11 @@ export class BookingsComponent implements OnInit {
     });
 
     this.http.delete(
-      `http://localhost:8087/booking-service/api/flight/booking/cancel/${this.cancelPnr}`,
+      `http://localhost:8087/booking-service/api/flight/booking/cancel/${this.selectedBooking.pnr}`,
       { headers }
     ).subscribe({
       next: () => {
-        const booking = this.allBookings.find(b => b.pnr === this.cancelPnr);
-        if (booking) {
-          booking.status = 'CANCELLED';
-          booking.canCancel = false;
-        }
-
+        this.selectedBooking.status = 'CANCELLED';
         this.applyFilter();
         this.closeCancelDialog();
       },
@@ -136,5 +126,19 @@ export class BookingsComponent implements OnInit {
           err?.error?.message || 'Cancellation not allowed';
       }
     });
+  }
+
+  // ---------------- TIME CHECK ----------------
+
+  private isWithin24HoursOfDeparture(booking: any): boolean {
+    if (!booking.departureTime) return true;
+
+    const departureMs = Date.parse(booking.departureTime);
+    const nowMs = Date.now();
+
+    const hoursBeforeDeparture =
+      (departureMs - nowMs) / (1000 * 60 * 60);
+
+    return hoursBeforeDeparture < 24;
   }
 }

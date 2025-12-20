@@ -1,3 +1,5 @@
+/* ===== PAGE LAYOUT ===== */
+
 .bookings-page {
   padding: 100px 40px 40px;
   max-width: 900px;
@@ -9,6 +11,8 @@
   margin-bottom: 30px;
   color: #111827;
 }
+
+/* ===== TOGGLE ===== */
 
 .toggle-container {
   display: flex;
@@ -59,14 +63,15 @@
   transition: 0.3s;
 }
 
-.switch input:checked+.slider {
+.switch input:checked + .slider {
   background: #2563eb;
 }
 
-.switch input:checked+.slider::before {
+.switch input:checked + .slider::before {
   transform: translateX(22px);
 }
 
+/* ===== BOOKING CARD ===== */
 
 .booking-card {
   background: #ffffff;
@@ -112,6 +117,8 @@
   color: #991b1b;
 }
 
+/* ===== SUMMARY ===== */
+
 .summary {
   display: flex;
   justify-content: space-between;
@@ -125,6 +132,7 @@
   color: #f97316;
 }
 
+/* ===== ACTIONS ===== */
 
 .card-actions {
   display: flex;
@@ -159,6 +167,8 @@
 .cancel-btn:hover {
   background: #fecaca;
 }
+
+/* ===== DETAILS ===== */
 
 .details {
   margin-top: 16px;
@@ -196,6 +206,7 @@
   margin-bottom: 0;
 }
 
+/* ===== EMPTY / ERROR ===== */
 
 .empty {
   text-align: center;
@@ -205,7 +216,10 @@
 
 .error {
   color: #dc2626;
+  font-weight: 600;
 }
+
+/* ===== DIALOG ===== */
 
 .backdrop {
   position: fixed;
@@ -217,6 +231,18 @@
   z-index: 2000;
 }
 
+/* ✨ subtle scale animation */
+@keyframes dialog-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .dialog {
   background: #ffffff;
   padding: 24px;
@@ -224,6 +250,7 @@
   width: 340px;
   text-align: center;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  animation: dialog-pop 0.2s ease-out;
 }
 
 .dialog h3 {
@@ -237,6 +264,16 @@
   font-size: 14px;
   color: #374151;
 }
+
+/* 🚫 error dialog emphasis */
+.dialog p.error {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* ===== DIALOG ACTIONS ===== */
 
 .actions {
   display: flex;

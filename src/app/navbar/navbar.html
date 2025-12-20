@@ -2,7 +2,6 @@
   <div class="logo">Fly Ease</div>
 
   <ul class="nav-links">
-    <!-- Always visible -->
     <li>
       <a
         routerLink="/"
@@ -19,7 +18,12 @@
       </a>
     </li>
 
-    <!-- Logged OUT -->
+    <li *ngIf="isLoggedIn">
+      <a routerLink="/bookings" routerLinkActive="active">
+        Bookings
+      </a>
+    </li>
+
     <li *ngIf="!isLoggedIn">
       <a routerLink="/login" routerLinkActive="active">
         Login
@@ -32,11 +36,16 @@
       </a>
     </li>
 
-    <!-- Logged IN -->
     <li *ngIf="isLoggedIn">
-      <button class="nav-link" (click)="logout()">
+      <button class="nav-link" (click)="openLogoutDialog()">
         Sign Out
       </button>
     </li>
   </ul>
 </nav>
+
+<app-logout
+  *ngIf="showLogoutDialog"
+  (confirm)="confirmLogout()"
+  (cancel)="cancelLogout()"
+></app-logout>

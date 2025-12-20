@@ -44,8 +44,12 @@ export class Register {
         this.message = 'Registration successful';
         this.cdr.detectChanges();
       },
-      error: () => {
-        this.message = 'Registration failed';
+      error: (err) => {
+        this.message =
+          err?.error ||
+          err?.error?.message ||
+          'User already exists';
+
         this.cdr.detectChanges();
       }
     });

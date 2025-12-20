@@ -26,9 +26,13 @@
         </select>
 
         <label>Travel Date</label>
-        <input type="date" formControlName="travelDate" [min]="minDate"/>
+        <input type="date" formControlName="travelDate" [min]="minDate" />
 
-        <button type="submit" [disabled]="loading">
+        <p class="error" *ngIf="searchForm.invalid && searchForm.touched">
+          Please fill all fields to search flights
+        </p>
+
+        <button type="submit" [disabled]="searchForm.invalid || loading">
           {{ loading ? 'Searching…' : 'Search Flights' }}
         </button>
 
