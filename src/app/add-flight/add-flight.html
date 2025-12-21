@@ -1,0 +1,118 @@
+<div class="add-flight-container">
+
+  <h2>Add Flight Inventory</h2>
+
+  <!-- SUCCESS -->
+  <div class="success" *ngIf="successMessage">
+    {{ successMessage }}
+  </div>
+
+  <!-- BACKEND ERROR -->
+  <div class="error" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- FORM LEVEL ERROR -->
+  <div class="error"
+       *ngIf="flightForm.errors?.['arrivalBeforeDeparture'] && flightForm.touched">
+    Arrival date & time must be after departure
+  </div>
+
+  <form [formGroup]="flightForm" (ngSubmit)="submit()">
+
+    <!-- Airline -->
+    <div class="row">
+      <div class="field">
+        <label>Airline Name</label>
+        <input type="text" formControlName="airline" />
+        <small class="error"
+          *ngIf="flightForm.get('airline')?.touched && flightForm.get('airline')?.invalid">
+          Airline is required
+        </small>
+      </div>
+
+      <div class="field">
+        <label>Airline Logo URL</label>
+        <input type="text" formControlName="airlineLogoUrl" />
+      </div>
+    </div>
+
+    <!-- Flight -->
+    <div class="row">
+      <div class="field">
+        <label>Flight Number</label>
+        <input type="text" formControlName="flightNumber" />
+        <small class="error"
+          *ngIf="flightForm.get('flightNumber')?.touched && flightForm.get('flightNumber')?.invalid">
+          Flight number is required
+        </small>
+      </div>
+
+      <div class="field">
+        <label>Trip Type</label>
+        <select formControlName="tripType">
+          <option value="ONEWAY">One Way</option>
+          <option value="ROUNDTRIP">Round Trip</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Route -->
+    <div class="row">
+      <div class="field">
+        <label>Origin</label>
+        <input type="text" formControlName="origin" />
+      </div>
+
+      <div class="field">
+        <label>Destination</label>
+        <input type="text" formControlName="destination" />
+      </div>
+    </div>
+
+    <!-- DEPARTURE -->
+    <div class="row">
+      <div class="field">
+        <label>Departure Date</label>
+        <input type="date" formControlName="departureDate" />
+      </div>
+
+      <div class="field">
+        <label>Departure Time</label>
+        <input type="time" formControlName="departureTime" />
+      </div>
+    </div>
+
+    <!-- ARRIVAL -->
+    <div class="row">
+      <div class="field">
+        <label>Arrival Date</label>
+        <input type="date" formControlName="arrivalDate" />
+      </div>
+
+      <div class="field">
+        <label>Arrival Time</label>
+        <input type="time" formControlName="arrivalTime" />
+      </div>
+    </div>
+
+    <!-- Seats & Price -->
+    <div class="row">
+      <div class="field">
+        <label>Total Seats</label>
+        <input type="number" formControlName="totalSeats" />
+      </div>
+
+      <div class="field">
+        <label>Price (₹)</label>
+        <input type="number" formControlName="price" />
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="flightForm.invalid || loading">
+      {{ loading ? 'Adding Flight...' : 'Add Flight' }}
+    </button>
+
+  </form>
+
+</div>

@@ -12,12 +12,23 @@ import { Logout } from '../logout/logout';
   styleUrl: './navbar.css',
 })
 export class Navbar {
+
   isLoggedIn = false;
+  isAdmin = false;
   showLogoutDialog = false;
 
   constructor(private auth: Auth, private router: Router) {
+
+    // React to login/logout
     this.auth.isLoggedIn().subscribe(status => {
       this.isLoggedIn = status;
+
+      // update admin flag whenever login status changes
+      if (status) {
+        this.isAdmin = localStorage.getItem('role') === 'ADMIN';
+      } else {
+        this.isAdmin = false;
+      }
     });
   }
 

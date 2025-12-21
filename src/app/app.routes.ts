@@ -7,18 +7,29 @@ import { Book } from './book/book';
 import { Home } from './home/home';
 import { BookingsComponent } from './bookings/bookings';
 
+// ✅ ADD THESE
+import { adminGuard } from './guards/admin.guard';
+import { AddFlightComponent } from './add-flight/add-flight';
+
 export const routes: Routes = [
-  {  path: '', component: Home},
-  { path: 'bookings', component: BookingsComponent },
+  { path: '', component: Home },
 
   { path: 'login', component: Login },
   { path: 'register', component: Register },
 
   { path: 'search', component: FlightSearchComponent },
+  { path: 'bookings', component: BookingsComponent },
 
   // Dynamic route
   { path: 'book/:flightId', component: Book },
 
-  // Optional: fallback route
-  { path: '**', redirectTo: 'login' }
+  // ✅ ADMIN ONLY ROUTE
+  {
+    path: 'admin/add-flight',
+    component: AddFlightComponent,
+    canActivate: [adminGuard]
+  },
+
+  // Fallback
+  { path: '**', redirectTo: '' }
 ];

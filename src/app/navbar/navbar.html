@@ -2,12 +2,12 @@
   <div class="logo">Fly Ease</div>
 
   <ul class="nav-links">
+
     <li>
       <a
         routerLink="/"
         routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
-      >
+        [routerLinkActiveOptions]="{ exact: true }">
         Home
       </a>
     </li>
@@ -18,12 +18,21 @@
       </a>
     </li>
 
+    <!-- USER BOOKINGS -->
     <li *ngIf="isLoggedIn">
       <a routerLink="/bookings" routerLinkActive="active">
         Bookings
       </a>
     </li>
 
+    <!-- ✅ ADMIN ONLY -->
+    <li *ngIf="isLoggedIn && isAdmin">
+      <a routerLink="/admin/add-flight" routerLinkActive="active">
+        Add Flight
+      </a>
+    </li>
+
+    <!-- AUTH -->
     <li *ngIf="!isLoggedIn">
       <a routerLink="/login" routerLinkActive="active">
         Login
@@ -36,16 +45,18 @@
       </a>
     </li>
 
+    <!-- LOGOUT -->
     <li *ngIf="isLoggedIn">
       <button class="nav-link" (click)="openLogoutDialog()">
         Sign Out
       </button>
     </li>
+
   </ul>
 </nav>
 
 <app-logout
   *ngIf="showLogoutDialog"
   (confirm)="confirmLogout()"
-  (cancel)="cancelLogout()"
-></app-logout>
+  (cancel)="cancelLogout()">
+</app-logout>

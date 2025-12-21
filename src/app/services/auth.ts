@@ -14,6 +14,7 @@ export class Auth {
 
   constructor(private http: HttpClient) {}
 
+  // ✅ REGISTER
   signup(data: any) {
     return this.http.post(
       `${this.baseUrl}/auth-service/auth/signup`,
@@ -22,6 +23,7 @@ export class Auth {
     );
   }
 
+  // ✅ LOGIN
   signin(data: any) {
     return this.http.post<any>(
       `${this.baseUrl}/auth-service/auth/signin`,
@@ -29,16 +31,26 @@ export class Auth {
     );
   }
 
+  // ✅ SAVE TOKEN + ROLE
   saveToken(token: string) {
     localStorage.setItem('token', token);
+
+    const role = this.extractRoleFromToken(token);
+    if (role) {
+      localStorage.setItem('role', role);
+    }
+
     this.loggedInSubject.next(true);
   }
 
+  // ✅ LOGOUT
   signout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
     this.loggedInSubject.next(false);
   }
 
+  // ✅ LOGIN STATE
   isLoggedIn() {
     return this.loggedIn$;
   }
@@ -46,15 +58,32 @@ export class Auth {
   private hasToken(): boolean {
     return !!localStorage.getItem('token');
   }
-  getUserEmail(): string | null {
-  const token = localStorage.getItem('token');
-  if (!token) return null;
 
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.sub || payload.email || null;
-  } catch {
-    return null;
+  // ✅ JWT ROLE EXTRACTION
+  private extractRoleFromToken(token: string): string | null {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const roles: string[] = payload.roles || [];
+
+      if (roles.includes('ROLE_ADMIN')) {
+        return 'ADMIN';
+      }
+      return 'USER';
+    } catch {
+      return null;
+    }
   }
-}
+
+  // ✅ EMAIL FROM TOKEN (already used in your app)
+  getUserEmail(): string | null {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.sub || payload.email || null;
+    } catch {
+      return null;
+    }
+  }
 }

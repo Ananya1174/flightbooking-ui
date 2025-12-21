@@ -18,7 +18,6 @@
   color: #fff;
 }
 
-/* Nav container */
 .nav-links {
   list-style: none;
   display: flex;
@@ -28,31 +27,26 @@
   align-items: center;
 }
 
-/* COMMON STYLE for <a> and Sign Out <button> */
 .nav-links a,
 .nav-links .nav-link {
   position: relative;
   background: none;
   border: none;
-
   color: #fff;
   font-weight: 500;
   font-size: inherit;
   font-family: inherit;
-
   padding: 6px 8px;
   cursor: pointer;
   white-space: nowrap;
   text-decoration: none;
 }
 
-/* Hover */
 .nav-links a:hover,
 .nav-links .nav-link:hover {
   opacity: 0.85;
 }
 
-/* Active underline (router links) */
 .nav-links a.active::after {
   content: '';
   position: absolute;
@@ -63,7 +57,6 @@
   background-color: #ffc107;
 }
 
-/* Hover underline for Sign Out */
 .nav-links .nav-link:hover::after {
   content: '';
   position: absolute;
