@@ -38,7 +38,6 @@ export class Profile {
     this.loadUserDetails();
   }
 
-  /* ✅ Correct password match validator */
   passwordMatchValidator = (form: FormGroup) => {
     const newPassword = form.get('newPassword');
     const confirmPassword = form.get('confirmPassword');
@@ -96,17 +95,16 @@ export class Profile {
         payload,
         {
           headers: { Authorization: `Bearer ${token}` },
-          responseType: 'text', // 🔥 THIS IS THE FIX
+          responseType: 'text', 
         }
       )
       .pipe(
         finalize(() => {
-          this.loading = false; // always reset
+          this.loading = false; 
         })
       )
       .subscribe({
         next: (response: string) => {
-          // ✅ NOW THIS WILL EXECUTE
           this.successMessage = response;
           this.passwordForm.reset();
         },

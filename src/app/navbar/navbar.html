@@ -18,20 +18,17 @@
       </a>
     </li>
 
-    <!-- USER BOOKINGS -->
     <li *ngIf="isLoggedIn">
       <a routerLink="/bookings" routerLinkActive="active">
         Bookings
       </a>
     </li>
-    <!-- PROFILE -->
 <li *ngIf="isLoggedIn">
   <a routerLink="/profile" routerLinkActive="active">
     Profile
   </a>
 </li>
 
-    <!-- ✅ ADMIN ONLY -->
     <li *ngIf="isLoggedIn && isAdmin">
       <a routerLink="/admin/add-flight" routerLinkActive="active">
         Add Flight
@@ -51,7 +48,6 @@
       </a>
     </li>
 
-    <!-- LOGOUT -->
     <li *ngIf="isLoggedIn">
       <button class="nav-link" (click)="openLogoutDialog()">
         Sign Out

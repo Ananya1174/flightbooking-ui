@@ -19,11 +19,9 @@ export class Navbar {
 
   constructor(private auth: Auth, private router: Router) {
 
-    // React to login/logout
     this.auth.isLoggedIn().subscribe(status => {
       this.isLoggedIn = status;
 
-      // update admin flag whenever login status changes
       if (status) {
         this.isAdmin = localStorage.getItem('role') === 'ADMIN';
       } else {

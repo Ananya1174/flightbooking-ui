@@ -1,6 +1,5 @@
 <div class="account-page">
 
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <h3 class="sidebar-title">My Account</h3>
 
@@ -25,10 +24,8 @@
     </ul>
   </aside>
 
-  <!-- CONTENT -->
   <section class="content">
 
-    <!-- PROFILE -->
     <div *ngIf="activeSection === 'profile'" class="card">
       <h2>My Profile</h2>
 
@@ -47,16 +44,13 @@
       </p>
     </div>
 
-    <!-- CHANGE PASSWORD -->
     <div *ngIf="activeSection === 'password'" class="card">
       <h2>Change Password</h2>
 
-      <!-- ✅ SUCCESS MESSAGE -->
       <div class="success" *ngIf="successMessage">
         {{ successMessage }}
       </div>
 
-      <!-- ✅ ERROR MESSAGE -->
       <div class="error" *ngIf="errorMessage">
         {{ errorMessage }}
       </div>

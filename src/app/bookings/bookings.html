@@ -1,6 +1,5 @@
 <div class="bookings-page">
 
-  <!-- HERO -->
   <section class="hero">
     <div class="hero-overlay"></div>
 
@@ -30,7 +29,6 @@
     </div>
   </section>
 
-  <!-- CONTENT -->
   <section class="content">
 
     <p class="empty" *ngIf="loading">Loading your trips…</p>
@@ -40,12 +38,10 @@
       No trips found.
     </p>
 
-    <!-- TRIP CARD -->
     <div
       class="trip-card"
       *ngFor="let booking of filteredBookings">
 
-      <!-- META TOP -->
       <div class="meta-top">
         <div>
           <strong>PNR:</strong> {{ booking.pnr }}
@@ -55,13 +51,11 @@
         </div>
       </div>
 
-      <!-- INFO -->
       <div class="info">
         <span>✈ Flight {{ booking.flightId }}</span>
         <span>👥 {{ booking.numSeats }} Passenger(s)</span>
       </div>
 
-      <!-- PRICE + STATUS + ACTIONS -->
       <div class="card-bottom">
 
         <div class="price-status">
@@ -93,7 +87,6 @@
 
       </div>
 
-      <!-- DETAILS (ONLY ONCE, INSIDE CARD) -->
       <div
         class="details"
         *ngIf="expandedPnr === booking.pnr">
@@ -113,7 +106,6 @@
     </div>
   </section>
 
-  <!-- CANCEL DIALOG -->
   <div class="backdrop" *ngIf="selectedBooking || cancelError">
     <div class="dialog">
 

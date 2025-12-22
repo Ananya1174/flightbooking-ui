@@ -21,11 +21,9 @@ export class BookingsComponent implements OnInit {
   loading = false;
   errorMessage = '';
 
-  /** 🔹 UI state */
   activeFilter: TripFilter = 'ALL';
   expandedPnr: string | null = null;
 
-  /** 🔹 Cancel dialog state */
   selectedBooking: any | null = null;
   cancelError: string | null = null;
 
@@ -38,9 +36,6 @@ export class BookingsComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
-  // =============================
-  // INIT
-  // =============================
 
   ngOnInit() {
     const email = this.auth.getUserEmail();
@@ -52,10 +47,6 @@ export class BookingsComponent implements OnInit {
 
     this.fetchBookings(email);
   }
-
-  // =============================
-  // API
-  // =============================
 
   fetchBookings(email: string) {
     this.loading = true;
@@ -82,10 +73,6 @@ export class BookingsComponent implements OnInit {
       });
   }
 
-  // =============================
-  // FILTER LOGIC (NEW)
-  // =============================
-
   setFilter(filter: TripFilter) {
     this.activeFilter = filter;
     this.applyFilter();
@@ -110,21 +97,12 @@ export class BookingsComponent implements OnInit {
     }
   }
 
-  // =============================
-  // UI ACTIONS
-  // =============================
-
   toggleExpand(pnr: string) {
     this.expandedPnr = this.expandedPnr === pnr ? null : pnr;
   }
 
-  // =============================
-  // CANCEL FLOW
-  // =============================
-
   openCancelDialog(booking: any) {
 
-    // 🚫 Restriction: within 24 hours
     if (this.isWithin24HoursOfDeparture(booking)) {
       this.cancelError =
         'Cancellation not allowed within 24 hours of departure';
@@ -132,7 +110,6 @@ export class BookingsComponent implements OnInit {
       return;
     }
 
-    // ✅ Allowed
     this.selectedBooking = booking;
     this.cancelError = null;
   }
@@ -167,10 +144,6 @@ export class BookingsComponent implements OnInit {
         },
       });
   }
-
-  // =============================
-  // TIME VALIDATION
-  // =============================
 
   private isWithin24HoursOfDeparture(booking: any): boolean {
     if (!booking.departureTime) return true;

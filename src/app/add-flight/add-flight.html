@@ -1,118 +1,151 @@
-<div class="add-flight-container">
+<div class="page-bg">
+  <div class="card">
 
-  <h2>Add Flight Inventory</h2>
+    <h2>Add Flight Inventory</h2>
+    <p class="subtitle">Admin – Airline Operations</p>
 
-  <!-- SUCCESS -->
-  <div class="success" *ngIf="successMessage">
-    {{ successMessage }}
+    <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    <div class="error" *ngIf="flightForm.errors?.['arrivalBeforeDeparture'] && flightForm.touched">
+      Arrival must be after departure
+    </div>
+
+    <div class="error" *ngIf="flightForm.errors?.['sameRoute'] && flightForm.touched">
+      Origin and destination cannot be the same
+    </div>
+
+    <form [formGroup]="flightForm" (ngSubmit)="submit()">
+
+      <h3>Airline</h3>
+      <div class="grid">
+        <div class="field">
+          <label>Airline Name</label>
+          <input formControlName="airline" />
+          <small *ngIf="flightForm.get('airline')?.touched && flightForm.get('airline')?.errors?.['required']">
+            This field is required
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Airline Logo URL</label>
+          <input formControlName="airlineLogoUrl" />
+          <small
+            *ngIf="flightForm.get('airlineLogoUrl')?.touched && flightForm.get('airlineLogoUrl')?.errors?.['pattern']">
+            Enter a valid URL
+          </small>
+        </div>
+      </div>
+
+      <!-- Flight -->
+      <h3>Flight Info</h3>
+      <div class="grid">
+        <div class="field">
+          <label>Flight Number</label>
+          <input formControlName="flightNumber" />
+          <small
+            *ngIf="flightForm.get('flightNumber')?.touched && flightForm.get('flightNumber')?.errors?.['required']">
+            This field is required
+          </small>
+          <small *ngIf="flightForm.get('flightNumber')?.touched && flightForm.get('flightNumber')?.errors?.['pattern']">
+            Format: AI101
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Trip Type</label>
+          <select formControlName="tripType">
+            <option value="ONEWAY">One Way</option>
+            <option value="ROUNDTRIP">Round Trip</option>
+          </select>
+        </div>
+      </div>
+
+      <h3>Route</h3>
+      <div class="grid">
+        <div class="field">
+          <label>Origin</label>
+          <input formControlName="origin" />
+          <small *ngIf="flightForm.get('origin')?.touched && flightForm.get('origin')?.errors?.['required']">
+            This field is required
+          </small>
+          <small *ngIf="flightForm.get('origin')?.errors?.['pattern']">
+            Use IATA code (HYD)
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Destination</label>
+          <input formControlName="destination" />
+          <small *ngIf="flightForm.get('destination')?.touched && flightForm.get('destination')?.errors?.['required']">
+            This field is required
+          </small>
+          <small *ngIf="flightForm.get('destination')?.errors?.['pattern']">
+            Use IATA code (DEL)
+          </small>
+        </div>
+      </div>
+
+      <h3>Schedule</h3>
+      <div class="grid">
+        <div class="field">
+          <label>Departure Date</label>
+          <input type="date" formControlName="departureDate" />
+          <small
+            *ngIf="flightForm.get('departureDate')?.touched && flightForm.get('departureDate')?.errors?.['required']">
+            This field is required
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Departure Time</label>
+          <input type="time" formControlName="departureTime" />
+          <small
+            *ngIf="flightForm.get('departureTime')?.touched && flightForm.get('departureTime')?.errors?.['required']">
+            This field is required
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Arrival Date</label>
+          <input type="date" formControlName="arrivalDate" />
+          <small *ngIf="flightForm.get('arrivalDate')?.touched && flightForm.get('arrivalDate')?.errors?.['required']">
+            This field is required
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Arrival Time</label>
+          <input type="time" formControlName="arrivalTime" />
+          <small *ngIf="flightForm.get('arrivalTime')?.touched && flightForm.get('arrivalTime')?.errors?.['required']">
+            This field is required
+          </small>
+        </div>
+      </div>
+
+      <h3>Capacity & Pricing</h3>
+      <div class="grid">
+        <div class="field">
+          <label>Total Seats</label>
+          <input type="number" formControlName="totalSeats" />
+          <small *ngIf="flightForm.get('totalSeats')?.touched && flightForm.get('totalSeats')?.errors?.['required']">
+            This field is required
+          </small>
+        </div>
+
+        <div class="field">
+          <label>Price (₹)</label>
+          <input type="number" formControlName="price" />
+          <small *ngIf="flightForm.get('price')?.touched && flightForm.get('price')?.errors?.['required']">
+            This field is required
+          </small>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="loading || flightForm.invalid">
+        {{ loading ? 'Adding Flight...' : 'Add Flight' }}
+      </button>
+
+    </form>
   </div>
-
-  <!-- BACKEND ERROR -->
-  <div class="error" *ngIf="errorMessage">
-    {{ errorMessage }}
-  </div>
-
-  <!-- FORM LEVEL ERROR -->
-  <div class="error"
-       *ngIf="flightForm.errors?.['arrivalBeforeDeparture'] && flightForm.touched">
-    Arrival date & time must be after departure
-  </div>
-
-  <form [formGroup]="flightForm" (ngSubmit)="submit()">
-
-    <!-- Airline -->
-    <div class="row">
-      <div class="field">
-        <label>Airline Name</label>
-        <input type="text" formControlName="airline" />
-        <small class="error"
-          *ngIf="flightForm.get('airline')?.touched && flightForm.get('airline')?.invalid">
-          Airline is required
-        </small>
-      </div>
-
-      <div class="field">
-        <label>Airline Logo URL</label>
-        <input type="text" formControlName="airlineLogoUrl" />
-      </div>
-    </div>
-
-    <!-- Flight -->
-    <div class="row">
-      <div class="field">
-        <label>Flight Number</label>
-        <input type="text" formControlName="flightNumber" />
-        <small class="error"
-          *ngIf="flightForm.get('flightNumber')?.touched && flightForm.get('flightNumber')?.invalid">
-          Flight number is required
-        </small>
-      </div>
-
-      <div class="field">
-        <label>Trip Type</label>
-        <select formControlName="tripType">
-          <option value="ONEWAY">One Way</option>
-          <option value="ROUNDTRIP">Round Trip</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Route -->
-    <div class="row">
-      <div class="field">
-        <label>Origin</label>
-        <input type="text" formControlName="origin" />
-      </div>
-
-      <div class="field">
-        <label>Destination</label>
-        <input type="text" formControlName="destination" />
-      </div>
-    </div>
-
-    <!-- DEPARTURE -->
-    <div class="row">
-      <div class="field">
-        <label>Departure Date</label>
-        <input type="date" formControlName="departureDate" />
-      </div>
-
-      <div class="field">
-        <label>Departure Time</label>
-        <input type="time" formControlName="departureTime" />
-      </div>
-    </div>
-
-    <!-- ARRIVAL -->
-    <div class="row">
-      <div class="field">
-        <label>Arrival Date</label>
-        <input type="date" formControlName="arrivalDate" />
-      </div>
-
-      <div class="field">
-        <label>Arrival Time</label>
-        <input type="time" formControlName="arrivalTime" />
-      </div>
-    </div>
-
-    <!-- Seats & Price -->
-    <div class="row">
-      <div class="field">
-        <label>Total Seats</label>
-        <input type="number" formControlName="totalSeats" />
-      </div>
-
-      <div class="field">
-        <label>Price (₹)</label>
-        <input type="number" formControlName="price" />
-      </div>
-    </div>
-
-    <button type="submit" [disabled]="flightForm.invalid || loading">
-      {{ loading ? 'Adding Flight...' : 'Add Flight' }}
-    </button>
-
-  </form>
-
 </div>

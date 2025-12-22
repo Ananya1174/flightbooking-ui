@@ -4,7 +4,7 @@ import {
   FormBuilder,
   FormGroup,
   Validators,
-  ReactiveFormsModule
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http';
 
@@ -13,40 +13,82 @@ import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http'
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
   templateUrl: './add-flight.html',
-  styleUrls: ['./add-flight.css']
+  styleUrls: ['./add-flight.css'],
 })
 export class AddFlightComponent {
-
   loading = false;
   errorMessage = '';
   successMessage = '';
 
-  flightForm!: FormGroup;
+  flightForm: FormGroup;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
+    this.flightForm = this.fb.group(
+      {
+        airline: ['', Validators.required],
 
-    this.flightForm = this.fb.group({
-      airline: ['', Validators.required],
-      airlineLogoUrl: [''],
-      flightNumber: ['', Validators.required],
-      origin: ['', Validators.required],
-      destination: ['', Validators.required],
+        airlineLogoUrl: [
+          '',
+          Validators.pattern(/^https?:\/\/.+/),
+        ],
 
-      // ✅ SEPARATE DATE & TIME
-      departureDate: ['', Validators.required],
-      departureTime: ['', Validators.required],
-      arrivalDate: ['', Validators.required],
-      arrivalTime: ['', Validators.required],
+        flightNumber: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(/^[A-Z]{2}[0-9]{1,4}$/),
+          ],
+        ],
 
-      totalSeats: [null, [Validators.required, Validators.min(1)]],
-      price: [null, [Validators.required, Validators.min(1)]],
-      tripType: ['ONEWAY']
-    }, {
-      validators: this.arrivalAfterDeparture
-    });
+        tripType: ['ONEWAY', Validators.required],
+
+        origin: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(/^[A-Z]{3}$/),
+          ],
+        ],
+
+        destination: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(/^[A-Z]{3}$/),
+          ],
+        ],
+
+        departureDate: ['', Validators.required],
+        departureTime: ['', Validators.required],
+        arrivalDate: ['', Validators.required],
+        arrivalTime: ['', Validators.required],
+
+        totalSeats: [
+          null,
+          [
+            Validators.required,
+            Validators.min(1),
+            Validators.max(500),
+          ],
+        ],
+
+        price: [
+          null,
+          [
+            Validators.required,
+            Validators.min(1),
+          ],
+        ],
+      },
+      {
+        validators: [
+          this.arrivalAfterDeparture,
+          this.originDestinationDifferent,
+        ],
+      }
+    );
   }
 
-  // ✅ FORM-LEVEL VALIDATOR
   arrivalAfterDeparture(group: FormGroup) {
     const dDate = group.get('departureDate')?.value;
     const dTime = group.get('departureTime')?.value;
@@ -63,6 +105,13 @@ export class AddFlightComponent {
       : { arrivalBeforeDeparture: true };
   }
 
+  originDestinationDifferent(group: FormGroup) {
+    const o = group.get('origin')?.value;
+    const d = group.get('destination')?.value;
+    if (!o || !d) return null;
+    return o !== d ? null : { sameRoute: true };
+  }
+
   submit() {
     if (this.flightForm.invalid) {
       this.flightForm.markAllAsTouched();
@@ -75,7 +124,6 @@ export class AddFlightComponent {
 
     const v = this.flightForm.value;
 
-    // ✅ BACKEND PAYLOAD (LocalDateTime)
     const payload = {
       airline: v.airline,
       airlineLogoUrl: v.airlineLogoUrl,
@@ -86,27 +134,30 @@ export class AddFlightComponent {
       arrival: `${v.arrivalDate}T${v.arrivalTime}`,
       totalSeats: v.totalSeats,
       price: v.price,
-      tripType: v.tripType
+      tripType: v.tripType,
     };
 
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${localStorage.getItem('token')}`
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
     });
 
-    this.http.post(
-      'http://localhost:8087/flight-service/api/flight/airline/inventory/add',
-      payload,
-      { headers }
-    ).subscribe({
-      next: () => {
-        this.successMessage = 'Flight added successfully';
-        this.flightForm.reset({ tripType: 'ONEWAY' });
-        this.loading = false;
-      },
-      error: err => {
-        this.errorMessage = err.error?.message || 'Failed to add flight';
-        this.loading = false;
-      }
-    });
+    this.http
+      .post(
+        'http://localhost:8087/flight-service/api/flight/airline/inventory/add',
+        payload,
+        { headers }
+      )
+      .subscribe({
+        next: () => {
+          this.successMessage = '✈️ Flight added successfully';
+          this.flightForm.reset({ tripType: 'ONEWAY' });
+          this.loading = false;
+        },
+        error: (err) => {
+          this.errorMessage =
+            err?.error?.message || 'Failed to add flight';
+          this.loading = false;
+        },
+      });
   }
 }
