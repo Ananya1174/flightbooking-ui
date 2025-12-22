@@ -54,6 +54,10 @@ export class Auth {
   isLoggedIn() {
     return this.loggedIn$;
   }
+  // ✅ AUTH CHECK (used by guards)
+isAuthenticated(): boolean {
+  return !!localStorage.getItem('token');
+}
 
   private hasToken(): boolean {
     return !!localStorage.getItem('token');

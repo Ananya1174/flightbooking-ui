@@ -1,0 +1,92 @@
+<div class="account-page">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h3 class="sidebar-title">My Account</h3>
+
+    <ul class="menu">
+      <li
+        [class.active]="activeSection === 'profile'"
+        (click)="activeSection = 'profile'"
+      >
+        My Profile
+      </li>
+
+      <li
+        [class.active]="activeSection === 'password'"
+        (click)="activeSection = 'password'"
+      >
+        Change Password
+      </li>
+
+      <li class="disabled">Logged In Devices</li>
+      <li class="disabled">Security</li>
+      <li class="logout">Logout</li>
+    </ul>
+  </aside>
+
+  <!-- CONTENT -->
+  <section class="content">
+
+    <!-- PROFILE -->
+    <div *ngIf="activeSection === 'profile'" class="card">
+      <h2>My Profile</h2>
+
+      <div class="info-row">
+        <span>Email</span>
+        <strong>{{ email || '—' }}</strong>
+      </div>
+
+      <div class="info-row">
+        <span>Role</span>
+        <strong>USER</strong>
+      </div>
+
+      <p class="hint">
+        Profile editing will be available in future updates.
+      </p>
+    </div>
+
+    <!-- CHANGE PASSWORD -->
+    <div *ngIf="activeSection === 'password'" class="card">
+      <h2>Change Password</h2>
+
+      <!-- ✅ SUCCESS MESSAGE -->
+      <div class="success" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <!-- ✅ ERROR MESSAGE -->
+      <div class="error" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+
+        <label>Current Password</label>
+        <input type="password" formControlName="oldPassword" />
+
+        <label>New Password</label>
+        <input type="password" formControlName="newPassword" />
+
+        <label>Confirm New Password</label>
+        <input type="password" formControlName="confirmPassword" />
+
+        <div
+          class="error"
+          *ngIf="
+            passwordForm.get('confirmPassword')?.touched &&
+            passwordForm.get('confirmPassword')?.errors?.['passwordMismatch']
+          "
+        >
+          New password and confirm password do not match.
+        </div>
+
+        <button type="submit" [disabled]="loading || passwordForm.invalid">
+          {{ loading ? 'Updating...' : 'Update Password' }}
+        </button>
+      </form>
+    </div>
+
+  </section>
+</div>

@@ -1,5 +1,5 @@
 <nav class="navbar">
-  <div class="logo">Fly Ease</div>
+  <div class="logo">Fly High</div>
 
   <ul class="nav-links">
 
@@ -24,6 +24,12 @@
         Bookings
       </a>
     </li>
+    <!-- PROFILE -->
+<li *ngIf="isLoggedIn">
+  <a routerLink="/profile" routerLinkActive="active">
+    Profile
+  </a>
+</li>
 
     <!-- ✅ ADMIN ONLY -->
     <li *ngIf="isLoggedIn && isAdmin">

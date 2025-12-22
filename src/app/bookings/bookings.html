@@ -1,123 +1,150 @@
 <div class="bookings-page">
 
-  <h2>My Trips</h2>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
 
-  <div class="toggle-container">
-    <span [class.active]="!showActiveOnly">All Trips</span>
+    <div class="hero-content">
+      <h1>My Trips</h1>
+      <p>Manage your upcoming and past journeys</p>
 
-    <label class="switch">
-      <input
-        type="checkbox"
-        [(ngModel)]="showActiveOnly"
-        (change)="onToggleChange()"
-      >
-      <span class="slider"></span>
-    </label>
+      <div class="filter-tabs">
+        <button
+          [class.active]="activeFilter === 'ALL'"
+          (click)="setFilter('ALL')">
+          All Trips
+        </button>
 
-    <span [class.active]="showActiveOnly">Active Trips</span>
-  </div>
+        <button
+          [class.active]="activeFilter === 'ACTIVE'"
+          (click)="setFilter('ACTIVE')">
+          Upcoming
+        </button>
 
-  <p class="empty" *ngIf="loading">Loading bookings...</p>
+        <button
+          [class.active]="activeFilter === 'CANCELLED'"
+          (click)="setFilter('CANCELLED')">
+          Cancelled
+        </button>
+      </div>
+    </div>
+  </section>
 
-  <p class="empty error" *ngIf="errorMessage">
-    {{ errorMessage }}
-  </p>
+  <!-- CONTENT -->
+  <section class="content">
 
-  <p class="empty" *ngIf="!loading && filteredBookings.length === 0">
-    No bookings found.
-  </p>
+    <p class="empty" *ngIf="loading">Loading your trips…</p>
+    <p class="empty error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
-  <div class="booking-card" *ngFor="let booking of filteredBookings">
+    <p class="empty" *ngIf="!loading && filteredBookings.length === 0">
+      No trips found.
+    </p>
 
-    <!-- HEADER -->
-    <div class="card-header">
-      <div>
-        <div class="pnr">PNR: {{ booking.pnr }}</div>
+    <!-- TRIP CARD -->
+    <div
+      class="trip-card"
+      *ngFor="let booking of filteredBookings">
+
+      <!-- META TOP -->
+      <div class="meta-top">
+        <div>
+          <strong>PNR:</strong> {{ booking.pnr }}
+        </div>
         <div class="date">
-          Booked on {{ booking.createdAt | date:'mediumDate' }}
+          {{ booking.createdAt | date:'mediumDate' }}
         </div>
       </div>
 
-      <span
-        class="status"
-        [class.active]="booking.status === 'ACTIVE'"
-        [class.cancelled]="booking.status === 'CANCELLED'"
-      >
-        {{ booking.status }}
-      </span>
-    </div>
-
-    <!-- SUMMARY -->
-    <div class="summary">
-      <div>Flight ID: {{ booking.flightId }}</div>
-      <div>Passengers: {{ booking.numSeats }}</div>
-      <div class="price">₹{{ booking.totalPrice }}</div>
-    </div>
-
-    <!-- ACTIONS -->
-    <div class="card-actions">
-      <button
-        class="details-btn"
-        (click)="toggleExpand(booking.pnr)"
-      >
-        {{ expandedPnr === booking.pnr ? 'Hide Details' : 'View Details' }}
-      </button>
-
-      <!-- ✅ CANCEL ONLY FOR ACTIVE BOOKINGS -->
-      <button
-        class="cancel-btn"
-        *ngIf="booking.status === 'ACTIVE'"
-        (click)="openCancelDialog(booking)"
-      >
-        Cancel Booking
-      </button>
-    </div>
-
-    <!-- DETAILS -->
-    <div class="details" *ngIf="expandedPnr === booking.pnr">
-      <h4>Passenger Details</h4>
-
-      <div class="passenger" *ngFor="let p of booking.passengers">
-        <div class="passenger-name">{{ p.name }}</div>
-        <div class="passenger-info">Seat: {{ p.seatNumber }}</div>
-        <div class="passenger-info">Meal Preference: {{ p.mealPreference }}</div>
-        <div class="passenger-info">Age: {{ p.age }}</div>
-        <div class="passenger-info">Gender: {{ p.gender }}</div>
+      <!-- INFO -->
+      <div class="info">
+        <span>✈ Flight {{ booking.flightId }}</span>
+        <span>👥 {{ booking.numSeats }} Passenger(s)</span>
       </div>
+
+      <!-- PRICE + STATUS + ACTIONS -->
+      <div class="card-bottom">
+
+        <div class="price-status">
+          <div class="price-label">Total Price</div>
+          <div class="price">₹{{ booking.totalPrice }}</div>
+
+          <span
+            class="status"
+            [class.active]="booking.status === 'ACTIVE'"
+            [class.cancelled]="booking.status === 'CANCELLED'">
+            {{ booking.status }}
+          </span>
+        </div>
+
+        <div class="actions">
+          <button
+            class="link"
+            (click)="toggleExpand(booking.pnr)">
+            {{ expandedPnr === booking.pnr ? 'Hide Details' : 'View Details' }}
+          </button>
+
+          <button
+            *ngIf="booking.status === 'ACTIVE'"
+            class="danger"
+            (click)="openCancelDialog(booking)">
+            Cancel
+          </button>
+        </div>
+
+      </div>
+
+      <!-- DETAILS (ONLY ONCE, INSIDE CARD) -->
+      <div
+        class="details"
+        *ngIf="expandedPnr === booking.pnr">
+
+        <div
+          class="passenger"
+          *ngFor="let p of booking.passengers">
+
+          <strong>{{ p.name }}</strong>
+          <span>Seat {{ p.seatNumber }}</span>
+          <span>{{ p.gender }}, {{ p.age }}</span>
+          <span>Meal: {{ p.mealPreference }}</span>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CANCEL DIALOG -->
+  <div class="backdrop" *ngIf="selectedBooking || cancelError">
+    <div class="dialog">
+
+      <h3>Cancel Booking</h3>
+
+      <p class="error" *ngIf="cancelError">
+        {{ cancelError }}
+      </p>
+
+      <p *ngIf="selectedBooking && !cancelError">
+        Are you sure you want to cancel this booking?
+        <br />
+        This action cannot be undone.
+      </p>
+
+      <div class="dialog-actions">
+        <button
+          class="secondary"
+          (click)="closeCancelDialog()">
+          Keep Booking
+        </button>
+
+        <button
+          class="danger"
+          *ngIf="selectedBooking && !cancelError"
+          (click)="confirmCancelBooking()">
+          Confirm Cancel
+        </button>
+      </div>
+
     </div>
   </div>
-</div>
 
-<!-- DIALOG -->
-<div class="backdrop" *ngIf="selectedBooking || cancelError">
-  <div class="dialog">
-
-    <h3>Cancel Booking</h3>
-
-    <!-- CONFIRMATION -->
-    <p *ngIf="selectedBooking && !cancelError">
-      Are you sure you want to cancel this booking?
-      This action cannot be undone.
-    </p>
-
-    <!-- RESTRICTION -->
-    <p class="error" *ngIf="cancelError">
-      {{ cancelError }}
-    </p>
-
-    <div class="actions">
-      <button class="secondary" (click)="closeCancelDialog()">
-        Keep Booking
-      </button>
-
-      <button
-        class="danger"
-        *ngIf="selectedBooking && !cancelError"
-        (click)="confirmCancelBooking()"
-      >
-        Cancel Booking
-      </button>
-    </div>
-
-  </div>
 </div>

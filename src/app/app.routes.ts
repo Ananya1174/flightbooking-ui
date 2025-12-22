@@ -11,6 +11,9 @@ import { BookingsComponent } from './bookings/bookings';
 import { adminGuard } from './guards/admin.guard';
 import { AddFlightComponent } from './add-flight/add-flight';
 
+import { authGuard } from './guards/auth.guard';
+import { Profile } from './profile/profile';
+
 export const routes: Routes = [
   { path: '', component: Home },
 
@@ -22,6 +25,11 @@ export const routes: Routes = [
 
   // Dynamic route
   { path: 'book/:flightId', component: Book },
+  {
+    path: 'profile',
+    component: Profile,
+    canActivate: [authGuard],
+  },
 
   // ✅ ADMIN ONLY ROUTE
   {

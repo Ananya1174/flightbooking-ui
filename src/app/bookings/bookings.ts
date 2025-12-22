@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Auth } from '../services/auth';
 
+type TripFilter = 'ALL' | 'ACTIVE' | 'CANCELLED';
+
 @Component({
   selector: 'app-bookings',
   standalone: true,
@@ -19,10 +21,11 @@ export class BookingsComponent implements OnInit {
   loading = false;
   errorMessage = '';
 
-  showActiveOnly = false;
+  /** 🔹 UI state */
+  activeFilter: TripFilter = 'ALL';
   expandedPnr: string | null = null;
 
-  // dialog state
+  /** 🔹 Cancel dialog state */
   selectedBooking: any | null = null;
   cancelError: string | null = null;
 
@@ -35,14 +38,24 @@ export class BookingsComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
+  // =============================
+  // INIT
+  // =============================
+
   ngOnInit() {
     const email = this.auth.getUserEmail();
+
     if (!email) {
       this.errorMessage = 'User not logged in';
       return;
     }
+
     this.fetchBookings(email);
   }
+
+  // =============================
+  // API
+  // =============================
 
   fetchBookings(email: string) {
     this.loading = true;
@@ -52,9 +65,10 @@ export class BookingsComponent implements OnInit {
       Authorization: `Bearer ${token}`,
     });
 
-    this.http.get<any[]>(`${this.baseUrl}/${email}`, { headers })
+    this.http
+      .get<any[]>(`${this.baseUrl}/${email}`, { headers })
       .subscribe({
-        next: res => {
+        next: (res) => {
           this.allBookings = res || [];
           this.applyFilter();
           this.loading = false;
@@ -64,29 +78,53 @@ export class BookingsComponent implements OnInit {
           this.errorMessage = 'Failed to load booking history';
           this.loading = false;
           this.cdr.detectChanges();
-        }
+        },
       });
   }
 
-  applyFilter() {
-    this.filteredBookings = this.showActiveOnly
-      ? this.allBookings.filter(b => b.status === 'ACTIVE')
-      : [...this.allBookings];
-  }
+  // =============================
+  // FILTER LOGIC (NEW)
+  // =============================
 
-  onToggleChange() {
+  setFilter(filter: TripFilter) {
+    this.activeFilter = filter;
     this.applyFilter();
   }
+
+  applyFilter() {
+    switch (this.activeFilter) {
+      case 'ACTIVE':
+        this.filteredBookings = this.allBookings.filter(
+          (b) => b.status === 'ACTIVE'
+        );
+        break;
+
+      case 'CANCELLED':
+        this.filteredBookings = this.allBookings.filter(
+          (b) => b.status === 'CANCELLED'
+        );
+        break;
+
+      default:
+        this.filteredBookings = [...this.allBookings];
+    }
+  }
+
+  // =============================
+  // UI ACTIONS
+  // =============================
 
   toggleExpand(pnr: string) {
     this.expandedPnr = this.expandedPnr === pnr ? null : pnr;
   }
 
-  // ---------------- CANCEL FLOW ----------------
+  // =============================
+  // CANCEL FLOW
+  // =============================
 
   openCancelDialog(booking: any) {
 
-    // 🔴 within 24 hours → show restriction dialog
+    // 🚫 Restriction: within 24 hours
     if (this.isWithin24HoursOfDeparture(booking)) {
       this.cancelError =
         'Cancellation not allowed within 24 hours of departure';
@@ -94,7 +132,7 @@ export class BookingsComponent implements OnInit {
       return;
     }
 
-    // 🟢 allowed → show confirmation dialog
+    // ✅ Allowed
     this.selectedBooking = booking;
     this.cancelError = null;
   }
@@ -112,23 +150,27 @@ export class BookingsComponent implements OnInit {
       Authorization: `Bearer ${token}`,
     });
 
-    this.http.delete(
-      `http://localhost:8087/booking-service/api/flight/booking/cancel/${this.selectedBooking.pnr}`,
-      { headers }
-    ).subscribe({
-      next: () => {
-        this.selectedBooking.status = 'CANCELLED';
-        this.applyFilter();
-        this.closeCancelDialog();
-      },
-      error: (err) => {
-        this.cancelError =
-          err?.error?.message || 'Cancellation not allowed';
-      }
-    });
+    this.http
+      .delete(
+        `http://localhost:8087/booking-service/api/flight/booking/cancel/${this.selectedBooking.pnr}`,
+        { headers }
+      )
+      .subscribe({
+        next: () => {
+          this.selectedBooking.status = 'CANCELLED';
+          this.applyFilter();
+          this.closeCancelDialog();
+        },
+        error: (err) => {
+          this.cancelError =
+            err?.error?.message || 'Cancellation not allowed';
+        },
+      });
   }
 
-  // ---------------- TIME CHECK ----------------
+  // =============================
+  // TIME VALIDATION
+  // =============================
 
   private isWithin24HoursOfDeparture(booking: any): boolean {
     if (!booking.departureTime) return true;

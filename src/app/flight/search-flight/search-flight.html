@@ -1,8 +1,16 @@
 <div class="search-page">
 
-  <div class="search-card">
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <h1>Search Flights</h1>
+    <p>Find the best flights for your journey</p>
+  </div>
 
-    <div class="search-left">
+  <!-- MAIN CONTENT -->
+  <div class="search-layout">
+
+    <!-- FILTERS -->
+    <aside class="filters">
 
       <h2>Your Search</h2>
 
@@ -19,7 +27,9 @@
         <label>To</label>
         <select formControlName="destination">
           <option value="" disabled selected>Select Destination</option>
-          <option *ngFor="let airport of airports" [value]="airport.code"
+          <option
+            *ngFor="let airport of airports"
+            [value]="airport.code"
             [disabled]="isDestinationDisabled(airport.code)">
             {{ airport.name }} ({{ airport.code }})
           </option>
@@ -28,84 +38,58 @@
         <label>Travel Date</label>
         <input type="date" formControlName="travelDate" [min]="minDate" />
 
-        <p class="error" *ngIf="searchForm.invalid && searchForm.touched">
-          Please fill all fields to search flights
-        </p>
-
         <button type="submit" [disabled]="searchForm.invalid || loading">
           {{ loading ? 'Searching…' : 'Search Flights' }}
         </button>
 
-        <p class="error" *ngIf="errorMessage">
-          {{ errorMessage }}
+        <p class="error" *ngIf="searchForm.invalid && searchForm.touched">
+          Please fill all fields
         </p>
 
       </form>
+    </aside>
 
-    </div>
-
-    <div class="search-right">
+    <!-- RESULTS -->
+    <main class="results">
 
       <h2>Available Flights</h2>
 
       <p class="empty" *ngIf="!loading && flights.length === 0">
-        No flights found. Try searching.
+        No flights found. Try a different search.
       </p>
 
       <div class="flight-card" *ngFor="let flight of flights">
 
-        <div class="airline-name">
-          {{ flight.airlineName }}
+        <div class="flight-left">
+          <div class="airline">{{ flight.airlineName }}</div>
+
+          <div class="time-row">
+            <div>
+              <div class="time">{{ flight.departureTime | date:'HH:mm' }}</div>
+              <div class="place">{{ flight.origin }}</div>
+            </div>
+
+            <div class="route">
+              ✈
+              <span>{{ flight.duration || '2h 10m' }}</span>
+            </div>
+
+            <div>
+              <div class="time">{{ flight.arrivalTime | date:'HH:mm' }}</div>
+              <div class="place">{{ flight.destination }}</div>
+            </div>
+          </div>
         </div>
 
-        <div class="flight-row">
-
-          <div class="time-block">
-            <div class="time">
-              {{ flight.departureTime | date:'HH:mm' }}
-            </div>
-            <div class="place">
-              {{ flight.origin }}
-            </div>
-          </div>
-
-          <div class="route-block">
-            <div class="trip-type">
-              {{ flight.tripType }}
-            </div>
-
-            <div class="route-line">
-              <span class="line"></span>
-              ✈
-              <span class="line"></span>
-            </div>
-
-            <div class="duration">
-              {{ flight.duration || '2h 10m' }}
-            </div>
-          </div>
-
-          <div class="time-block">
-            <div class="time">
-              {{ flight.arrivalTime | date:'HH:mm' }}
-            </div>
-            <div class="place">
-              {{ flight.destination }}
-            </div>
-          </div>
-
-          <div class="price-block">
-            ₹{{ flight.price }}
-          </div>
-          <button type="button" class="book-btn" (click)="goToBooking(flight)">
-            Book
-          </button>
-
+        <div class="flight-right">
+          <div class="trip">{{ flight.tripType }}</div>
+          <div class="price">₹{{ flight.price }}</div>
+          <button (click)="goToBooking(flight)">Book</button>
         </div>
 
       </div>
 
-    </div>
+    </main>
 
   </div>
 
