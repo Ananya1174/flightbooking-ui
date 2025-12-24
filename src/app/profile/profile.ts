@@ -9,7 +9,8 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { Auth } from '../services/auth'; // ✅ adjust path if needed
+import { Auth } from '../services/auth';
+import { checkPassword,PasswordPolicyStatus } from '../password-policy';
 
 @Component({
   selector: 'app-profile',
@@ -19,105 +20,73 @@ import { Auth } from '../services/auth'; // ✅ adjust path if needed
   styleUrl: './profile.css',
 })
 export class Profile {
-  activeSection: 'profile' | 'password' = 'profile';
-
+activeSection: 'profile' | 'password' = 'profile';
+email: string | null = null;
   passwordForm: FormGroup;
+  passwordStatus: PasswordPolicyStatus | null = null;
+  sameAsOld = false;
+
   loading = false;
   successMessage = '';
   errorMessage = '';
-  email: string | null = '';
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private auth: Auth,            // ✅ ADD
-    private router: Router         // ✅ ADD
+    private auth: Auth,
+    private router: Router
   ) {
-    this.passwordForm = this.fb.group(
-      {
-        oldPassword: ['', Validators.required],
-        newPassword: ['', [Validators.required, Validators.minLength(8)]],
-        confirmPassword: ['', Validators.required],
-      },
-      { validators: this.passwordMatchValidator }
-    );
-
-    this.loadUserDetails();
+    this.passwordForm = this.fb.group({
+      oldPassword: ['', Validators.required],
+      newPassword: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
+    });
+    this.loadUserEmail();
+  }
+  private loadUserEmail() {
+    this.email = this.auth.getUserEmail();
   }
 
-  passwordMatchValidator = (form: FormGroup) => {
-    const newPassword = form.get('newPassword');
-    const confirmPassword = form.get('confirmPassword');
-
-    if (!newPassword || !confirmPassword) return null;
-
-    if (
-      confirmPassword.errors &&
-      !confirmPassword.errors['passwordMismatch']
-    ) {
-      return null;
-    }
-
-    if (newPassword.value !== confirmPassword.value) {
-      confirmPassword.setErrors({ passwordMismatch: true });
-    } else {
-      confirmPassword.setErrors(null);
-    }
-
-    return null;
-  };
-
-  loadUserDetails() {
-    this.email = localStorage.getItem('email');
-
-    if (!this.email) {
-      const token = localStorage.getItem('token');
-      if (token) {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        this.email = payload.sub || payload.email || '';
-      }
-    }
+  onNewPasswordInput() {
+    const newPwd = this.passwordForm.value.newPassword || '';
+    this.passwordStatus = checkPassword(newPwd);
+    this.sameAsOld = newPwd === this.passwordForm.value.oldPassword;
   }
 
   changePassword() {
-    if (this.passwordForm.invalid) {
+    if (
+      this.passwordForm.invalid ||
+      !this.passwordStatus?.valid ||
+      this.sameAsOld
+    ) {
       this.passwordForm.markAllAsTouched();
       return;
     }
-
-    this.loading = true;
-    this.successMessage = '';
-    this.errorMessage = '';
 
     const payload = {
       currentPassword: this.passwordForm.value.oldPassword,
       newPassword: this.passwordForm.value.newPassword,
     };
 
-    const token = localStorage.getItem('token');
+    this.loading = true;
 
     this.http
       .put(
         'http://localhost:8087/auth-service/auth/change-password',
         payload,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          responseType: 'text',
-        }
+        { responseType: 'text' }
       )
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
-        next: (response: string) => {
-          this.successMessage = response;
-          this.passwordForm.reset();
-
+        next: () => {
+          this.successMessage =
+            'Password changed successfully. Please login again.';
           setTimeout(() => {
-            this.auth.signout(); 
-          }, 1500); 
+            this.auth.signout();
+          }, 1500);
         },
         error: (err) => {
-          this.errorMessage =
-            err?.error || 'Failed to update password.';
+          this.errorMessage = err?.error || 'Password update failed';
         },
       });
   }

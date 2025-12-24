@@ -2,6 +2,7 @@
 
   <div class="auth-card">
 
+    <!-- LEFT PANEL -->
     <div class="auth-left">
       <h1>Create Your Account</h1>
       <p>
@@ -11,52 +12,82 @@
       </p>
     </div>
 
+    <!-- RIGHT PANEL -->
     <div class="auth-right">
 
       <h2>Register</h2>
 
       <form [formGroup]="registerForm" (ngSubmit)="register()">
 
+        <!-- USERNAME -->
         <label>Name</label>
         <input type="text" formControlName="username" />
 
-        <small class="error" *ngIf="registerForm.get('username')?.touched &&
+        <small class="error"
+          *ngIf="registerForm.get('username')?.touched &&
                  registerForm.get('username')?.hasError('required')">
           Name is required
         </small>
 
+        <!-- EMAIL -->
         <label>Email</label>
         <input type="email" formControlName="email" />
 
-        <small class="error" *ngIf="registerForm.get('email')?.touched &&
+        <small class="error"
+          *ngIf="registerForm.get('email')?.touched &&
                  registerForm.get('email')?.hasError('required')">
           Email is required
         </small>
 
-        <small class="error" *ngIf="registerForm.get('email')?.touched &&
+        <small class="error"
+          *ngIf="registerForm.get('email')?.touched &&
                  registerForm.get('email')?.hasError('email')">
           Enter a valid email address
         </small>
 
+        <!-- PASSWORD -->
         <label>Password</label>
-        <input type="password" formControlName="password" />
+        <input
+          type="password"
+          formControlName="password"
+          (input)="onPasswordInput()"
+        />
 
-        <small class="error" *ngIf="registerForm.get('password')?.touched &&
+        <small class="error"
+          *ngIf="registerForm.get('password')?.touched &&
                  registerForm.get('password')?.hasError('required')">
           Password is required
         </small>
 
-        <small class="error" *ngIf="registerForm.get('password')?.touched &&
-                 registerForm.get('password')?.hasError('minlength')">
-          Password must be at least 6 characters
-        </small>
+        <!-- PASSWORD POLICY HINTS -->
+        <div class="password-hints" *ngIf="passwordStatus">
+          <p [class.ok]="passwordStatus.length">
+            ✔ Minimum 12 characters
+          </p>
+          <p [class.ok]="passwordStatus.uppercase">
+            ✔ At least one uppercase letter (A–Z)
+          </p>
+          <p [class.ok]="passwordStatus.lowercase">
+            ✔ At least one lowercase letter (a–z)
+          </p>
+          <p [class.ok]="passwordStatus.number">
+            ✔ At least one number (0–9)
+          </p>
+          <p [class.ok]="passwordStatus.special">
+            ✔ At least one special character (!@#$%^&*)
+          </p>
+        </div>
 
-        <button type="submit">
+        <!-- SUBMIT -->
+        <button
+          type="submit"
+          [disabled]="registerForm.invalid || !passwordStatus?.valid">
           Create Account
         </button>
 
       </form>
 
+      <!-- MESSAGE -->
       <p class="message">{{ message }}</p>
 
     </div>

@@ -104,3 +104,17 @@ button:hover {
   margin-top: 18px;
   color: var(--color-success);
 }
+
+.password-hints {
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.password-hints p {
+  color: #dc2626;
+  margin: 2px 0;
+}
+
+.password-hints p.ok {
+  color: #16a34a;
+}

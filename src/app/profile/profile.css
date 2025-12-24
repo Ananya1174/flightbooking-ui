@@ -6,6 +6,7 @@
   gap: 30px;
 }
 
+/* SIDEBAR */
 .sidebar {
   width: 260px;
   background: white;
@@ -54,6 +55,7 @@
   font-weight: 600;
 }
 
+/* CONTENT */
 .content {
   flex: 1;
   max-width: 520px;
@@ -70,6 +72,7 @@
   margin-bottom: 24px;
 }
 
+/* PROFILE INFO */
 .info-row {
   display: flex;
   justify-content: space-between;
@@ -83,6 +86,7 @@
   color: #6b7280;
 }
 
+/* FORM */
 label {
   display: block;
   margin-bottom: 6px;
@@ -92,7 +96,7 @@ label {
 input {
   width: 100%;
   padding: 10px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   border-radius: 10px;
   border: 1px solid #d1d5db;
 }
@@ -110,20 +114,38 @@ button {
 
 button:disabled {
   background: #9ca3af;
+  cursor: not-allowed;
 }
 
+/* PASSWORD POLICY */
+.password-hints {
+  margin: 10px 0 16px;
+  font-size: 13px;
+}
+
+.password-hints p {
+  margin: 3px 0;
+  color: #dc2626;
+}
+
+.password-hints p.ok {
+  color: #16a34a;
+}
+
+/* MESSAGES */
 .success {
-  margin-top: 16px;
+  margin-bottom: 16px;
   color: #16a34a;
   font-weight: 600;
 }
 
 .error {
-  margin-top: 12px;
+  margin-bottom: 12px;
   color: #dc2626;
   font-weight: 600;
 }
 
+/* RESPONSIVE */
 @media (max-width: 900px) {
   .account-page {
     flex-direction: column;

@@ -38,17 +38,11 @@
       No trips found.
     </p>
 
-    <div
-      class="trip-card"
-      *ngFor="let booking of filteredBookings">
+    <div class="trip-card" *ngFor="let booking of filteredBookings">
 
       <div class="meta-top">
-        <div>
-          <strong>PNR:</strong> {{ booking.pnr }}
-        </div>
-        <div class="date">
-          {{ booking.createdAt | date:'mediumDate' }}
-        </div>
+        <div><strong>PNR:</strong> {{ booking.pnr }}</div>
+        <div class="date">{{ booking.createdAt | date:'mediumDate' }}</div>
       </div>
 
       <div class="info">
@@ -57,7 +51,6 @@
       </div>
 
       <div class="card-bottom">
-
         <div class="price-status">
           <div class="price-label">Total Price</div>
           <div class="price">₹{{ booking.totalPrice }}</div>
@@ -84,36 +77,27 @@
             Cancel
           </button>
         </div>
-
       </div>
 
-      <div
-        class="details"
-        *ngIf="expandedPnr === booking.pnr">
-
-        <div
-          class="passenger"
-          *ngFor="let p of booking.passengers">
-
+      <div class="details" *ngIf="expandedPnr === booking.pnr">
+        <div class="passenger" *ngFor="let p of booking.passengers">
           <strong>{{ p.name }}</strong>
           <span>Seat {{ p.seatNumber }}</span>
           <span>{{ p.gender }}, {{ p.age }}</span>
           <span>Meal: {{ p.mealPreference }}</span>
-
         </div>
       </div>
 
     </div>
   </section>
 
+  <!-- CANCEL DIALOG -->
   <div class="backdrop" *ngIf="selectedBooking || cancelError">
     <div class="dialog">
 
       <h3>Cancel Booking</h3>
 
-      <p class="error" *ngIf="cancelError">
-        {{ cancelError }}
-      </p>
+      <p class="error" *ngIf="cancelError">{{ cancelError }}</p>
 
       <p *ngIf="selectedBooking && !cancelError">
         Are you sure you want to cancel this booking?

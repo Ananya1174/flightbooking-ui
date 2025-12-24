@@ -1,5 +1,6 @@
 <div class="account-page">
 
+  <!-- SIDEBAR -->
   <aside class="sidebar">
     <h3 class="sidebar-title">My Account</h3>
 
@@ -24,8 +25,10 @@
     </ul>
   </aside>
 
+  <!-- CONTENT -->
   <section class="content">
 
+    <!-- PROFILE VIEW -->
     <div *ngIf="activeSection === 'profile'" class="card">
       <h2>My Profile</h2>
 
@@ -40,9 +43,11 @@
       </div>
 
       <p class="hint">
+        For security reasons, we recommend changing your password regularly.
       </p>
     </div>
 
+    <!-- CHANGE PASSWORD -->
     <div *ngIf="activeSection === 'password'" class="card">
       <h2>Change Password</h2>
 
@@ -56,12 +61,42 @@
 
       <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
 
+        <!-- CURRENT PASSWORD -->
         <label>Current Password</label>
         <input type="password" formControlName="oldPassword" />
 
+        <!-- NEW PASSWORD -->
         <label>New Password</label>
-        <input type="password" formControlName="newPassword" />
+        <input
+          type="password"
+          formControlName="newPassword"
+          (input)="onNewPasswordInput()"
+        />
 
+        <!-- PASSWORD POLICY -->
+        <div class="password-hints" *ngIf="passwordStatus">
+          <p [class.ok]="passwordStatus.length">
+            ✔ Minimum 12 characters
+          </p>
+          <p [class.ok]="passwordStatus.uppercase">
+            ✔ At least one uppercase letter (A–Z)
+          </p>
+          <p [class.ok]="passwordStatus.lowercase">
+            ✔ At least one lowercase letter (a–z)
+          </p>
+          <p [class.ok]="passwordStatus.number">
+            ✔ At least one number (0–9)
+          </p>
+          <p [class.ok]="passwordStatus.special">
+            ✔ At least one special character (!@#$%^&*)
+          </p>
+
+          <p *ngIf="sameAsOld" class="error">
+            ❌ New password must be different from current password
+          </p>
+        </div>
+
+        <!-- CONFIRM PASSWORD -->
         <label>Confirm New Password</label>
         <input type="password" formControlName="confirmPassword" />
 
@@ -75,7 +110,16 @@
           New password and confirm password do not match.
         </div>
 
-        <button type="submit" [disabled]="loading || passwordForm.invalid">
+        <!-- SUBMIT -->
+        <button
+          type="submit"
+          [disabled]="
+            loading ||
+            passwordForm.invalid ||
+            !passwordStatus?.valid ||
+            sameAsOld
+          "
+        >
           {{ loading ? 'Updating...' : 'Update Password' }}
         </button>
       </form>

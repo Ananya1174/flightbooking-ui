@@ -27,6 +27,9 @@ export class BookingsComponent implements OnInit {
   selectedBooking: any | null = null;
   cancelError: string | null = null;
 
+  // 🔒 ONE-CLICK LOCK
+  isCancelling = false;
+
   private baseUrl =
     'http://localhost:8087/booking-service/api/flight/booking/history';
 
@@ -36,15 +39,12 @@ export class BookingsComponent implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
-
   ngOnInit() {
     const email = this.auth.getUserEmail();
-
     if (!email) {
       this.errorMessage = 'User not logged in';
       return;
     }
-
     this.fetchBookings(email);
   }
 
@@ -82,16 +82,14 @@ export class BookingsComponent implements OnInit {
     switch (this.activeFilter) {
       case 'ACTIVE':
         this.filteredBookings = this.allBookings.filter(
-          (b) => b.status === 'ACTIVE'
+          b => b.status === 'ACTIVE'
         );
         break;
-
       case 'CANCELLED':
         this.filteredBookings = this.allBookings.filter(
-          (b) => b.status === 'CANCELLED'
+          b => b.status === 'CANCELLED'
         );
         break;
-
       default:
         this.filteredBookings = [...this.allBookings];
     }
@@ -102,7 +100,6 @@ export class BookingsComponent implements OnInit {
   }
 
   openCancelDialog(booking: any) {
-
     if (this.isWithin24HoursOfDeparture(booking)) {
       this.cancelError =
         'Cancellation not allowed within 24 hours of departure';
@@ -112,38 +109,49 @@ export class BookingsComponent implements OnInit {
 
     this.selectedBooking = booking;
     this.cancelError = null;
+    this.isCancelling = false;
   }
 
   closeCancelDialog() {
     this.selectedBooking = null;
     this.cancelError = null;
+    this.isCancelling = false; // 🔓 reset lock
   }
 
   confirmCancelBooking() {
-    if (!this.selectedBooking) return;
+  if (!this.selectedBooking || this.isCancelling) return;
 
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
+  this.isCancelling = true;
 
-    this.http
-      .delete(
-        `http://localhost:8087/booking-service/api/flight/booking/cancel/${this.selectedBooking.pnr}`,
-        { headers }
-      )
-      .subscribe({
-        next: () => {
-          this.selectedBooking.status = 'CANCELLED';
-          this.applyFilter();
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`,
+  });
+
+  this.http
+    .delete(
+      `http://localhost:8087/booking-service/api/flight/booking/cancel/${this.selectedBooking.pnr}`,
+      { headers }
+    )
+    .subscribe({
+      next: () => {
+        // update UI state
+        this.selectedBooking!.status = 'CANCELLED';
+        this.applyFilter();
+
+        // ✅ CRITICAL FIX: defer dialog close
+        Promise.resolve().then(() => {
           this.closeCancelDialog();
-        },
-        error: (err) => {
-          this.cancelError =
-            err?.error?.message || 'Cancellation not allowed';
-        },
-      });
-  }
+          this.cdr.detectChanges();
+        });
+      },
+      error: (err) => {
+        this.cancelError =
+          err?.error?.message || 'Cancellation not allowed';
+        this.isCancelling = false;
+      },
+    });
+}
 
   private isWithin24HoursOfDeparture(booking: any): boolean {
     if (!booking.departureTime) return true;
