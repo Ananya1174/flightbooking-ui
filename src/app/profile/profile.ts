@@ -8,6 +8,8 @@ import {
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { finalize } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { Auth } from '../services/auth'; // ✅ adjust path if needed
 
 @Component({
   selector: 'app-profile',
@@ -25,7 +27,12 @@ export class Profile {
   errorMessage = '';
   email: string | null = '';
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private auth: Auth,            // ✅ ADD
+    private router: Router         // ✅ ADD
+  ) {
     this.passwordForm = this.fb.group(
       {
         oldPassword: ['', Validators.required],
@@ -95,18 +102,18 @@ export class Profile {
         payload,
         {
           headers: { Authorization: `Bearer ${token}` },
-          responseType: 'text', 
+          responseType: 'text',
         }
       )
-      .pipe(
-        finalize(() => {
-          this.loading = false; 
-        })
-      )
+      .pipe(finalize(() => (this.loading = false)))
       .subscribe({
         next: (response: string) => {
           this.successMessage = response;
           this.passwordForm.reset();
+
+          setTimeout(() => {
+            this.auth.signout(); 
+          }, 1500); 
         },
         error: (err) => {
           this.errorMessage =

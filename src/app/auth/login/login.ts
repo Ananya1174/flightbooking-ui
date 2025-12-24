@@ -6,6 +6,7 @@ import {
   Validators,
   FormGroup
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Auth } from '../../services/auth';
 
 @Component({
@@ -23,6 +24,7 @@ export class Login {
   constructor(
     private fb: FormBuilder,
     private auth: Auth,
+    private router: Router,
     private cdr: ChangeDetectorRef
   ) {
     this.loginForm = this.fb.group({
@@ -45,7 +47,13 @@ export class Login {
     this.auth.signin(payload).subscribe({
       next: (res) => {
         console.log('LOGIN RESPONSE', res);
+
+        // ✅ Save token + role
         this.auth.saveToken(res.token);
+
+        // ✅ Redirect to HOME
+        this.router.navigate(['/']);
+
         this.message = 'Login successful';
         this.cdr.detectChanges();
       },

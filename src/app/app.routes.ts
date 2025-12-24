@@ -6,38 +6,40 @@ import { FlightSearchComponent } from './flight/search-flight/search-flight';
 import { Book } from './book/book';
 import { Home } from './home/home';
 import { BookingsComponent } from './bookings/bookings';
-
-// ✅ ADD THESE
-import { adminGuard } from './guards/admin.guard';
-import { AddFlightComponent } from './add-flight/add-flight';
+import { Profile } from './profile/profile';
 
 import { authGuard } from './guards/auth.guard';
-import { Profile } from './profile/profile';
+import { adminGuard } from './guards/admin.guard';
+import { AddFlightComponent } from './add-flight/add-flight';
+import { loginGuard } from './guards/login.guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
-
-  { path: 'login', component: Login },
-  { path: 'register', component: Register },
-
+  { path: 'login', component: Login,canActivate: [loginGuard] },
+  { path: 'register', component: Register ,canActivate: [loginGuard]},
   { path: 'search', component: FlightSearchComponent },
-  { path: 'bookings', component: BookingsComponent },
 
-  // Dynamic route
-  { path: 'book/:flightId', component: Book },
+  {
+    path: 'bookings',
+    component: BookingsComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'book/:flightId',
+    component: Book,
+    canActivate: [authGuard],
+  },
   {
     path: 'profile',
     component: Profile,
     canActivate: [authGuard],
   },
 
-  // ✅ ADMIN ONLY ROUTE
   {
     path: 'admin/add-flight',
     component: AddFlightComponent,
-    canActivate: [adminGuard]
+    canActivate: [adminGuard],
   },
 
-  // Fallback
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];

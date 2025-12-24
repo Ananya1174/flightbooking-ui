@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class Auth {
   private loggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
   loggedIn$ = this.loggedInSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private router: Router) {}
 
   // ✅ REGISTER
   signup(data: any) {
@@ -48,6 +49,7 @@ export class Auth {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     this.loggedInSubject.next(false);
+    this.router.navigate(['/login']);
   }
 
   // ✅ LOGIN STATE
