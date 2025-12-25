@@ -13,11 +13,12 @@ import {
   ReactiveFormsModule
 } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { SeatMapComponent } from '../seat-map/seat-map';
 
 @Component({
   selector: 'app-book',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, SeatMapComponent],
   templateUrl: './book.html',
   styleUrl: './book.css',
 })
@@ -82,6 +83,15 @@ export class Book implements OnInit {
   onSeatCountChange() {
     const count = this.bookingForm.get('numSeats')?.value;
     this.updatePassengers(count);
+  }
+
+  /** ✅ Seat map → passenger seat binding */
+  onSeatsSelected(seats: string[]) {
+    seats.forEach((seat, index) => {
+      if (this.passengers.at(index)) {
+        this.passengers.at(index).patchValue({ seatNumber: seat });
+      }
+    });
   }
 
   loadFlight() {

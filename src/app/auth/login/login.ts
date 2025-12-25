@@ -20,6 +20,7 @@ export class Login {
 
   message = '';
   loginForm: FormGroup;
+  loading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -39,27 +40,40 @@ export class Login {
       return;
     }
 
-    const payload = {
-      email: this.loginForm.value.email,
-      password: this.loginForm.value.password
-    };
+    this.message = '';
+    this.loading = true;
+
+    const payload = this.loginForm.value;
 
     this.auth.signin(payload).subscribe({
       next: (res) => {
         console.log('LOGIN RESPONSE', res);
 
-        // ✅ Save token + role
+        // ✅ Save token + flags
         this.auth.saveToken(res.token);
 
-        // ✅ Redirect to HOME
-        this.router.navigate(['/']);
+        // 🔐 PASSWORD EXPIRED FLOW
+        if (res.passwordExpired === true) {
+          this.message =
+            '⚠️ Your password has expired. Please change it to continue.';
 
-        this.message = 'Login successful';
+          this.router.navigate(['/profile'], {
+            queryParams: { forcePasswordChange: true }
+          });
+        } else {
+          this.router.navigate(['/']);
+        }
+
+        this.loading = false;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('LOGIN ERROR', err);
-        this.message = 'Invalid credentials';
+        this.loading = false;
+        this.message =
+          typeof err?.error === 'string'
+            ? err.error
+            : 'Invalid email or password';
+
         this.cdr.detectChanges();
       }
     });

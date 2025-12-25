@@ -7,28 +7,31 @@
     <ul class="menu">
       <li
         [class.active]="activeSection === 'profile'"
-        (click)="activeSection = 'profile'"
-      >
+        [class.disabled]="forcePasswordChange"
+        (click)="switchSection('profile')">
         My Profile
       </li>
 
       <li
         [class.active]="activeSection === 'password'"
-        (click)="activeSection = 'password'"
-      >
+        (click)="switchSection('password')">
         Change Password
       </li>
 
       <li class="disabled">Logged In Devices</li>
       <li class="disabled">Security</li>
-      <li class="logout">Logout</li>
     </ul>
   </aside>
 
   <!-- CONTENT -->
   <section class="content">
 
-    <!-- PROFILE VIEW -->
+    <!-- 🔐 FORCE WARNING -->
+    <div class="error" *ngIf="forcePasswordChange">
+      ⚠️ Your password has expired. You must change it to continue using the application.
+    </div>
+
+    <!-- PROFILE -->
     <div *ngIf="activeSection === 'profile'" class="card">
       <h2>My Profile</h2>
 
@@ -41,10 +44,6 @@
         <span>Role</span>
         <strong>USER</strong>
       </div>
-
-      <p class="hint">
-        For security reasons, we recommend changing your password regularly.
-      </p>
     </div>
 
     <!-- CHANGE PASSWORD -->
@@ -61,56 +60,40 @@
 
       <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
 
-        <!-- CURRENT PASSWORD -->
         <label>Current Password</label>
         <input type="password" formControlName="oldPassword" />
 
-        <!-- NEW PASSWORD -->
         <label>New Password</label>
         <input
           type="password"
           formControlName="newPassword"
-          (input)="onNewPasswordInput()"
-        />
+          (input)="onNewPasswordInput()" />
 
         <!-- PASSWORD POLICY -->
         <div class="password-hints" *ngIf="passwordStatus">
-          <p [class.ok]="passwordStatus.length">
-            ✔ Minimum 12 characters
-          </p>
-          <p [class.ok]="passwordStatus.uppercase">
-            ✔ At least one uppercase letter (A–Z)
-          </p>
-          <p [class.ok]="passwordStatus.lowercase">
-            ✔ At least one lowercase letter (a–z)
-          </p>
-          <p [class.ok]="passwordStatus.number">
-            ✔ At least one number (0–9)
-          </p>
-          <p [class.ok]="passwordStatus.special">
-            ✔ At least one special character (!@#$%^&*)
-          </p>
+          <p [class.ok]="passwordStatus.length">✔ Minimum 12 characters</p>
+          <p [class.ok]="passwordStatus.uppercase">✔ One uppercase letter</p>
+          <p [class.ok]="passwordStatus.lowercase">✔ One lowercase letter</p>
+          <p [class.ok]="passwordStatus.number">✔ One number</p>
+          <p [class.ok]="passwordStatus.special">✔ One special character</p>
 
           <p *ngIf="sameAsOld" class="error">
             ❌ New password must be different from current password
           </p>
         </div>
 
-        <!-- CONFIRM PASSWORD -->
         <label>Confirm New Password</label>
         <input type="password" formControlName="confirmPassword" />
 
         <div
           class="error"
           *ngIf="
-            passwordForm.get('confirmPassword')?.touched &&
-            passwordForm.get('confirmPassword')?.errors?.['passwordMismatch']
-          "
-        >
-          New password and confirm password do not match.
+            passwordForm.errors?.['passwordMismatch'] &&
+            passwordForm.get('confirmPassword')?.touched
+          ">
+          New password and confirm password do not match
         </div>
 
-        <!-- SUBMIT -->
         <button
           type="submit"
           [disabled]="
@@ -118,10 +101,10 @@
             passwordForm.invalid ||
             !passwordStatus?.valid ||
             sameAsOld
-          "
-        >
+          ">
           {{ loading ? 'Updating...' : 'Update Password' }}
         </button>
+
       </form>
     </div>
 

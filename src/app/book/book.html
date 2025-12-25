@@ -17,6 +17,13 @@
         min="1"
         (change)="onSeatCountChange()" />
 
+      <!-- ✅ SEAT MAP -->
+      <app-seat-map
+        [flightId]="flightId"
+        [maxSelectableSeats]="bookingForm.get('numSeats')?.value"
+        (seatsSelected)="onSeatsSelected($event)">
+      </app-seat-map>
+
       <div
         formArrayName="passengers"
         *ngFor="let p of passengers.controls; let i = index">
@@ -34,7 +41,8 @@
             <option value="F">Female</option>
           </select>
 
-          <input placeholder="Seat Number" formControlName="seatNumber" />
+          <!-- ❌ REMOVED MANUAL SEAT INPUT -->
+          <!-- Seat number is auto-filled from seat map -->
 
           <select formControlName="mealPreference">
             <option value="">Meal Preference</option>

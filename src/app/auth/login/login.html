@@ -18,28 +18,31 @@
         <label>Email</label>
         <input type="email" formControlName="email" />
 
-        <small class="error" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+        <small class="error"
+          *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
           Enter a valid email
         </small>
 
         <label>Password</label>
         <input type="password" formControlName="password" />
 
-
-        <small class="error" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+        <small class="error"
+          *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
           Password is required
         </small>
 
-        <button type="submit">
-          Login – Continue Exploring
+        <button type="submit" [disabled]="loading">
+          {{ loading ? 'Signing in...' : 'Login – Continue Exploring' }}
         </button>
 
       </form>
 
-      <p class="message">{{ message }}</p>
+      <!-- ✅ MESSAGE AREA -->
+      <p class="message" *ngIf="message">
+        {{ message }}
+      </p>
 
     </div>
-
   </div>
 
 </div>

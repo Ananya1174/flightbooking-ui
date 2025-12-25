@@ -7,28 +7,35 @@ import { Book } from './book/book';
 import { Home } from './home/home';
 import { BookingsComponent } from './bookings/bookings';
 import { Profile } from './profile/profile';
+import { AddFlightComponent } from './add-flight/add-flight';
 
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
-import { AddFlightComponent } from './add-flight/add-flight';
 import { loginGuard } from './guards/login.guard';
+import { passwordExpiredGuard } from './guards/password-expired.guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
-  { path: 'login', component: Login,canActivate: [loginGuard] },
-  { path: 'register', component: Register ,canActivate: [loginGuard]},
-  { path: 'search', component: FlightSearchComponent },
+
+  { path: 'login', component: Login, canActivate: [loginGuard] },
+  { path: 'register', component: Register, canActivate: [loginGuard] },
 
   {
-    path: 'bookings',
-    component: BookingsComponent,
-    canActivate: [authGuard],
+    path: 'search',
+    component: FlightSearchComponent,
+    canActivate: [authGuard, passwordExpiredGuard],
   },
   {
     path: 'book/:flightId',
     component: Book,
-    canActivate: [authGuard],
+    canActivate: [authGuard, passwordExpiredGuard],
   },
+  {
+    path: 'bookings',
+    component: BookingsComponent,
+    canActivate: [authGuard, passwordExpiredGuard],
+  },
+
   {
     path: 'profile',
     component: Profile,
@@ -38,7 +45,7 @@ export const routes: Routes = [
   {
     path: 'admin/add-flight',
     component: AddFlightComponent,
-    canActivate: [adminGuard],
+    canActivate: [authGuard, adminGuard, passwordExpiredGuard],
   },
 
   { path: '**', redirectTo: '' },

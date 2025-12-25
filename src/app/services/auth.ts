@@ -13,9 +13,12 @@ export class Auth {
   private loggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
   loggedIn$ = this.loggedInSubject.asObservable();
 
-  constructor(private http: HttpClient,private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
-  // ✅ REGISTER
+  // ================= REGISTER =================
   signup(data: any) {
     return this.http.post(
       `${this.baseUrl}/auth-service/auth/signup`,
@@ -24,7 +27,7 @@ export class Auth {
     );
   }
 
-  // ✅ LOGIN
+  // ================= LOGIN =================
   signin(data: any) {
     return this.http.post<any>(
       `${this.baseUrl}/auth-service/auth/signin`,
@@ -32,55 +35,64 @@ export class Auth {
     );
   }
 
-  // ✅ SAVE TOKEN + ROLE
+  // ================= SAVE TOKEN + FLAGS =================
   saveToken(token: string) {
     localStorage.setItem('token', token);
 
-    const role = this.extractRoleFromToken(token);
-    if (role) {
-      localStorage.setItem('role', role);
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+
+      // ✅ SAVE ROLE
+      const roles: string[] = payload.roles || [];
+      localStorage.setItem(
+        'role',
+        roles.includes('ROLE_ADMIN') ? 'ADMIN' : 'USER'
+      );
+
+      // ✅ SAVE PASSWORD EXPIRY FLAG
+      if (payload.pwd_expired !== undefined) {
+        localStorage.setItem(
+          'passwordChangeRequired',
+          String(payload.pwd_expired)
+        );
+      }
+
+    } catch (e) {
+      console.error('Invalid JWT payload', e);
     }
 
     this.loggedInSubject.next(true);
   }
 
-  // ✅ LOGOUT
+  // ================= PASSWORD EXPIRY CHECK =================
+  isPasswordChangeRequired(): boolean {
+    return localStorage.getItem('passwordChangeRequired') === 'true';
+  }
+
+  // ================= LOGOUT =================
   signout() {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
+    localStorage.removeItem('passwordChangeRequired');
+
     this.loggedInSubject.next(false);
     this.router.navigate(['/login']);
   }
 
-  // ✅ LOGIN STATE
+  // ================= AUTH STATE =================
   isLoggedIn() {
     return this.loggedIn$;
   }
-  // ✅ AUTH CHECK (used by guards)
-isAuthenticated(): boolean {
-  return !!localStorage.getItem('token');
-}
+
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('token');
+  }
 
   private hasToken(): boolean {
     return !!localStorage.getItem('token');
   }
 
-  // ✅ JWT ROLE EXTRACTION
-  private extractRoleFromToken(token: string): string | null {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const roles: string[] = payload.roles || [];
-
-      if (roles.includes('ROLE_ADMIN')) {
-        return 'ADMIN';
-      }
-      return 'USER';
-    } catch {
-      return null;
-    }
-  }
-
-  // ✅ EMAIL FROM TOKEN (already used in your app)
+  // ================= EMAIL FROM TOKEN =================
   getUserEmail(): string | null {
     const token = localStorage.getItem('token');
     if (!token) return null;
