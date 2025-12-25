@@ -1,4 +1,12 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges,
+  ChangeDetectorRef
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -9,7 +17,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   templateUrl: './seat-map.html',
   styleUrl: './seat-map.css'
 })
-export class SeatMapComponent implements OnInit {
+export class SeatMapComponent implements OnChanges {
 
   @Input() flightId!: number;
   @Input() maxSelectableSeats = 1;
@@ -24,10 +32,24 @@ export class SeatMapComponent implements OnInit {
   private seatApi =
     'http://localhost:8087/flight-service/api/flight';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  ngOnInit() {
-    this.loadSeats();
+  ngOnChanges(changes: SimpleChanges) {
+
+    // 🔹 Load seats when flightId arrives
+    if (changes['flightId'] && this.flightId) {
+      this.loadSeats();
+    }
+
+    // 🔹 Reset seats when passenger count changes
+    if (changes['maxSelectableSeats'] && !changes['maxSelectableSeats'].firstChange) {
+      this.selectedSeats = [];
+      this.seatsSelected.emit([]);
+      this.cdr.markForCheck();
+    }
   }
 
   loadSeats() {
@@ -37,7 +59,16 @@ export class SeatMapComponent implements OnInit {
 
     this.http
       .get<any[]>(`${this.seatApi}/${this.flightId}/seats`, { headers })
-      .subscribe(res => this.seats = res);
+      .subscribe({
+        next: res => {
+          this.seats = res;
+          this.cdr.markForCheck(); // ✅ KEY LINE
+        },
+        error: () => {
+          this.seats = [];
+          this.cdr.markForCheck();
+        }
+      });
   }
 
   toggleSeat(seat: any) {
@@ -53,6 +84,7 @@ export class SeatMapComponent implements OnInit {
     }
 
     this.seatsSelected.emit([...this.selectedSeats]);
+    this.cdr.markForCheck();
   }
 
   isSelected(seatNo: string) {

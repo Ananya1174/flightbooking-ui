@@ -14,7 +14,7 @@ import {
 } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { SeatMapComponent } from '../seat-map/seat-map';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-book',
   standalone: true,
@@ -42,8 +42,9 @@ export class Book implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private fb: FormBuilder,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.flightId = Number(this.route.snapshot.paramMap.get('flightId'));
@@ -131,6 +132,9 @@ export class Book implements OnInit {
           this.bookingResponse = res;
           this.loading = false;
           this.cdr.detectChanges();
+          setTimeout(() => {
+            this.router.navigate(['/bookings']);
+          }, 2000);
         },
         error: (err) => {
           this.errorMessage = err?.error?.message || 'Booking failed';

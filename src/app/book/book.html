@@ -1,74 +1,105 @@
-<div class="booking-wrapper" *ngIf="flight">
+<div class="booking-page" *ngIf="flight">
 
-  <div class="booking-card">
+  <!-- ✈️ FLIGHT SUMMARY -->
+  <div class="flight-summary">
+    <div>
+      <h2>{{ flight.airlineName }}</h2>
+      <p>{{ flight.origin }} → {{ flight.destination }}</p>
+    </div>
+    <div class="price">
+      ₹{{ flight.price }} <span>/ seat</span>
+    </div>
+  </div>
 
-    <h2>Book Flight</h2>
+  <div class="booking-layout">
 
-    <p><b>{{ flight.airlineName }}</b></p>
-    <p>{{ flight.origin }} → {{ flight.destination }}</p>
-    <p>Price per seat: ₹{{ flight.price }}</p>
-
-    <form [formGroup]="bookingForm">
-
-      <label>Number of Passengers</label>
-      <input
-        type="number"
-        formControlName="numSeats"
-        min="1"
-        (change)="onSeatCountChange()" />
-
-      <!-- ✅ SEAT MAP -->
+    <!-- 🪑 SEAT MAP -->
+    <section class="seat-section">
       <app-seat-map
         [flightId]="flightId"
         [maxSelectableSeats]="bookingForm.get('numSeats')?.value"
         (seatsSelected)="onSeatsSelected($event)">
       </app-seat-map>
+    </section>
 
-      <div
-        formArrayName="passengers"
-        *ngFor="let p of passengers.controls; let i = index">
+    <!-- 👤 PASSENGER DETAILS -->
+    <section class="passenger-section">
 
-        <div [formGroupName]="i" class="passenger-card">
+      <form [formGroup]="bookingForm">
 
-          <h4>Passenger {{ i + 1 }}</h4>
+        <label class="seat-count">
+          Passengers
+          <input
+            type="number"
+            formControlName="numSeats"
+            min="1"
+            (change)="onSeatCountChange()" />
+        </label>
 
-          <input placeholder="Name" formControlName="name" />
-          <input placeholder="Age" type="number" formControlName="age" />
+        <div
+          formArrayName="passengers"
+          *ngFor="let p of passengers.controls; let i = index">
 
-          <select formControlName="gender">
-            <option value="">Gender</option>
-            <option value="M">Male</option>
-            <option value="F">Female</option>
-          </select>
+          <div [formGroupName]="i" class="passenger-card">
 
-          <!-- ❌ REMOVED MANUAL SEAT INPUT -->
-          <!-- Seat number is auto-filled from seat map -->
+            <div class="passenger-header">
+              <h4>Passenger {{ i + 1 }}</h4>
+              <span class="seat-badge">
+                Seat {{ p.value.seatNumber || '—' }}
+              </span>
+            </div>
 
-          <select formControlName="mealPreference">
-            <option value="">Meal Preference</option>
-            <option value="VEG">VEG</option>
-            <option value="NON_VEG">NON_VEG</option>
-          </select>
+            <input placeholder="Name" formControlName="name" />
+            <input type="number" placeholder="Age" formControlName="age" />
 
+            <select formControlName="gender">
+              <option value="">Gender</option>
+              <option value="M">Male</option>
+              <option value="F">Female</option>
+            </select>
+
+            <select formControlName="mealPreference">
+              <option value="">Meal Preference</option>
+              <option value="VEG">VEG</option>
+              <option value="NON_VEG">NON VEG</option>
+            </select>
+
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="confirm-btn"
+          (click)="confirmBooking()"
+          [disabled]="loading">
+          {{ loading ? 'Booking...' : 'Confirm Booking' }}
+        </button>
+
+      </form>
+
+      <!-- ❌ ERROR MESSAGE -->
+      <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+      <!-- ✅ BOOKING SUCCESS -->
+      <div *ngIf="bookingResponse" class="booking-success">
+        <h3>🎉 Booking Confirmed</h3>
+
+        <div class="success-row">
+          <span>PNR</span>
+          <strong>{{ bookingResponse.pnr }}</strong>
+        </div>
+
+        <div class="success-row">
+          <span>Status</span>
+          <strong>{{ bookingResponse.status }}</strong>
+        </div>
+
+        <div class="success-row">
+          <span>Total Paid</span>
+          <strong>₹{{ bookingResponse.totalPrice }}</strong>
         </div>
       </div>
 
-      <button
-        type="button"
-        (click)="confirmBooking()"
-        [disabled]="loading">
-        {{ loading ? 'Booking...' : 'Confirm Booking' }}
-      </button>
-
-    </form>
-
-    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
-
-    <div *ngIf="bookingResponse" class="success">
-      <p><b>PNR:</b> {{ bookingResponse.pnr }}</p>
-      <p><b>Status:</b> {{ bookingResponse.status }}</p>
-    </div>
-
+    </section>
   </div>
-
 </div>

@@ -1,37 +1,144 @@
-.booking-wrapper {
-  min-height: calc(100vh - 80px);
+.booking-page {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* ✈️ FLIGHT SUMMARY */
+.flight-summary {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  background: var(--color-background-card);
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 30px var(--color-shadow);
+  margin-bottom: 20px;
+  margin-top: 50px;
 }
 
-.booking-card {
-  background: white;
-  padding: 30px;
-  border-radius: 16px;
-  width: 450px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+.flight-summary h2 {
+  margin: 0;
 }
 
+.price {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* 🧱 MAIN LAYOUT */
+.booking-layout {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 24px;
+}
+
+/* 🪑 SEAT SECTION */
+.seat-section {
+  background: var(--color-background-card);
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 30px var(--color-shadow);
+}
+
+/* 👤 PASSENGER SECTION */
+.passenger-section {
+  background: var(--color-background-card);
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 30px var(--color-shadow);
+}
+
+.seat-count {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.seat-count input {
+  width: 80px;
+}
+
+/* 👤 PASSENGER CARD */
 .passenger-card {
-  background: #f9fafb;
+  background: var(--color-background-soft);
   padding: 16px;
-  border-radius: 12px;
-  margin-top: 16px;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
 }
 
-input, select {
+.passenger-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.seat-badge {
+  background: var(--color-primary-light);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+input,
+select {
   width: 100%;
   padding: 10px;
   margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
 }
 
-button {
+/* ✅ CONFIRM */
+.confirm-btn {
   width: 100%;
   margin-top: 20px;
-  padding: 12px;
-  background: #2563eb;
+  padding: 14px;
+  background: var(--color-primary);
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.confirm-btn:hover {
+  background: var(--color-primary-light);
+}
+
+.error {
+  color: var(--color-danger);
+  margin-top: 10px;
+}
+/* ✅ BOOKING SUCCESS */
+.booking-success {
+  margin-top: 20px;
+  padding: 18px;
+  background: #ecfdf5;
+  border: 1px solid #86efac;
+  border-radius: var(--radius-md);
+}
+
+.booking-success h3 {
+  margin: 0 0 12px;
+  color: var(--color-success);
+}
+
+.success-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 15px;
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 900px) {
+  .booking-layout {
+    grid-template-columns: 1fr;
+  }
 }
