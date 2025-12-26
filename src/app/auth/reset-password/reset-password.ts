@@ -9,6 +9,11 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
+import {
+  PasswordPolicyStatus,
+  checkPassword
+} from '../../password-policy';
+
 @Component({
   selector: 'app-reset-password',
   standalone: true,
@@ -20,8 +25,17 @@ export class ResetPassword implements OnInit {
 
   form!: FormGroup;
   token = '';
-  message = '';
   loading = false;
+  message = '';
+
+  passwordStatus: PasswordPolicyStatus = {
+    length: false,
+    uppercase: false,
+    lowercase: false,
+    number: false,
+    special: false,
+    valid: false
+  };
 
   private api =
     'http://localhost:8087/auth-service/auth/reset-password';
@@ -34,7 +48,7 @@ export class ResetPassword implements OnInit {
     private cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.token = this.route.snapshot.queryParamMap.get('token') || '';
 
     if (!this.token) {
@@ -43,30 +57,30 @@ export class ResetPassword implements OnInit {
     }
 
     this.form = this.fb.group({
-      newPassword: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.pattern(
-            /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).+$/
-          )
-        ]
-      ],
+      newPassword: ['', Validators.required],
       confirmNewPassword: ['', Validators.required]
+    });
+
+    // 🔥 LIVE password validation
+    this.form.get('newPassword')!.valueChanges.subscribe(value => {
+      this.passwordStatus = checkPassword(value || '');
+      this.cdr.detectChanges();
     });
   }
 
-  submit() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
+  passwordsMatch(): boolean {
+    return (
+      this.form.value.newPassword ===
+      this.form.value.confirmNewPassword
+    );
+  }
 
-    const { newPassword, confirmNewPassword } = this.form.value;
-
-    if (newPassword !== confirmNewPassword) {
-      this.message = 'Passwords do not match';
+  submit(): void {
+    if (
+      this.form.invalid ||
+      !this.passwordStatus.valid ||
+      !this.passwordsMatch()
+    ) {
       return;
     }
 
@@ -77,11 +91,10 @@ export class ResetPassword implements OnInit {
       this.api,
       {
         token: this.token,
-        newPassword
+        newPassword: this.form.value.newPassword,
+        confirmNewPassword: this.form.value.confirmNewPassword
       },
-      {
-        responseType: 'text' // ✅ VERY IMPORTANT
-      }
+      { responseType: 'text' }
     ).subscribe({
       next: (res) => {
         this.message = res;
