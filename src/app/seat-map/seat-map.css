@@ -69,3 +69,17 @@
   color: var(--color-text-light);
   margin-top: 10px;
 }
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.side {
+  display: flex;
+  gap: 12px;
+}
+
+.aisle {
+  width: 28px; /* aisle space */
+}

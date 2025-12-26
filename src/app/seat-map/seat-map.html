@@ -10,16 +10,37 @@
 
   <div class="rows">
     <div class="row" *ngFor="let row of getSeatRows()">
-      <div
-        class="seat"
-        *ngFor="let seat of row"
-        [class.available]="seat.status === 'AVAILABLE'"
-        [class.booked]="seat.status === 'BOOKED'"
-        [class.selected]="isSelected(seat.seatNumber)"
-        (click)="toggleSeat(seat)">
-        {{ seat.seatNumber }}
-      </div>
+
+  <!-- LEFT SIDE A–C -->
+  <div class="side">
+    <div
+      class="seat"
+      *ngFor="let seat of getLeftSeats(row)"
+      [class.available]="seat.status === 'AVAILABLE'"
+      [class.booked]="seat.status === 'BOOKED'"
+      [class.selected]="isSelected(seat.seatNumber)"
+      (click)="toggleSeat(seat)">
+      {{ seat.seatNumber }}
     </div>
+  </div>
+
+  <!-- AISLE -->
+  <div class="aisle"></div>
+
+  <!-- RIGHT SIDE D–F -->
+  <div class="side">
+    <div
+      class="seat"
+      *ngFor="let seat of getRightSeats(row)"
+      [class.available]="seat.status === 'AVAILABLE'"
+      [class.booked]="seat.status === 'BOOKED'"
+      [class.selected]="isSelected(seat.seatNumber)"
+      (click)="toggleSeat(seat)">
+      {{ seat.seatNumber }}
+    </div>
+  </div>
+
+</div>
   </div>
 
   <p class="hint">

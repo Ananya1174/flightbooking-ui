@@ -11,9 +11,7 @@
 
   <div class="booking-layout">
     <section class="seat-section">
-      <app-seat-map
-        [flightId]="flightId"
-        [maxSelectableSeats]="bookingForm.get('numSeats')?.value"
+      <app-seat-map [flightId]="flightId" [maxSelectableSeats]="bookingForm.get('numSeats')?.value"
         (seatsSelected)="onSeatsSelected($event)">
       </app-seat-map>
     </section>
@@ -23,16 +21,10 @@
 
         <label class="seat-count">
           Passengers
-          <input
-            type="number"
-            formControlName="numSeats"
-            min="1"
-            (change)="onSeatCountChange()" />
+          <input type="number" formControlName="numSeats" min="1" (change)="onSeatCountChange()" />
         </label>
 
-        <div
-          formArrayName="passengers"
-          *ngFor="let p of passengers.controls; let i = index">
+        <div formArrayName="passengers" *ngFor="let p of passengers.controls; let i = index">
 
           <div [formGroupName]="i" class="passenger-card">
 
@@ -61,11 +53,7 @@
           </div>
         </div>
 
-        <button
-          type="button"
-          class="confirm-btn"
-          (click)="confirmBooking()"
-          [disabled]="loading">
+        <button type="button" class="confirm-btn" (click)="confirmBooking()" [disabled]="isConfirmDisabled()">
           {{ loading ? 'Booking...' : 'Confirm Booking' }}
         </button>
 

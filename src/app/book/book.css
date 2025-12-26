@@ -90,14 +90,26 @@ select {
 }
 .confirm-btn {
   width: 100%;
-  margin-top: 20px;
-  padding: 14px;
+  padding: 12px;
   background: var(--color-primary);
   color: white;
   border: none;
-  border-radius: var(--radius-md);
-  font-size: 16px;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
+  transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+/* 👇 DISABLED STATE (IMPORTANT) */
+.confirm-btn:disabled {
+  background: #3b6dd3;      /* light gray */
+  color: #a5abb5;           /* muted text */
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.confirm-btn:disabled:hover {
+  background: #3b6dd3;
 }
 
 .confirm-btn:hover {

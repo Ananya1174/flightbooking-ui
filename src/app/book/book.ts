@@ -31,6 +31,7 @@ export class Book implements OnInit {
   loading = false;
   errorMessage = '';
   bookingResponse: any = null;
+  selectedSeats: string[] = [];
 
   private flightApi =
     'http://localhost:8087/flight-service/api/flight';
@@ -87,11 +88,21 @@ export class Book implements OnInit {
   }
 
   onSeatsSelected(seats: string[]) {
+    this.selectedSeats = seats;
+
+    // clear all seat numbers first
+    this.passengers.controls.forEach(ctrl => {
+      ctrl.patchValue({ seatNumber: '' }, { emitEvent: false });
+    });
+
+    // assign seats in order
     seats.forEach((seat, index) => {
       if (this.passengers.at(index)) {
         this.passengers.at(index).patchValue({ seatNumber: seat });
       }
     });
+
+    this.cdr.detectChanges();
   }
 
   loadFlight() {
@@ -142,4 +153,15 @@ export class Book implements OnInit {
         }
       });
   }
+  isConfirmDisabled(): boolean {
+  const passengerCount = this.passengers.length;
+  const selectedSeatCount = this.selectedSeats.length;
+
+  return (
+    this.loading ||
+    this.bookingForm.invalid ||
+    passengerCount === 0 ||
+    selectedSeatCount !== passengerCount
+  );
+}
 }

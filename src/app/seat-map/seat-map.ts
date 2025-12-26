@@ -94,4 +94,11 @@ export class SeatMapComponent implements OnChanges {
     }
     return rows;
   }
+  getLeftSeats(row: any[]) {
+  return row.slice(0, 3); 
+}
+
+getRightSeats(row: any[]) {
+  return row.slice(3, 6); 
+}
 }
