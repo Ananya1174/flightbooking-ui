@@ -18,22 +18,30 @@
         <label>Email</label>
         <input type="email" formControlName="email" />
 
-        <small class="error"
-          *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+        <small class="error" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
           Enter a valid email
         </small>
 
         <label>Password</label>
         <input type="password" formControlName="password" />
 
-        <small class="error"
-          *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+        <small class="error" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
           Password is required
         </small>
 
         <button type="submit" [disabled]="loading">
           {{ loading ? 'Signing in...' : 'Login – Continue Exploring' }}
         </button>
+        <div class="login-links">
+          <a routerLink="/forgot-password" class="forgot-link">
+            Forgot password?
+          </a>
+
+          <span class="divider">•</span>
+
+          <span class="text">New user?</span>
+          <a routerLink="/register" class="register-link">Register</a>
+        </div>
 
       </form>
       <p class="message" *ngIf="message">

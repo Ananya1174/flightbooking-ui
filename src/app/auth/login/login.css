@@ -106,3 +106,30 @@ button:hover {
   margin-top: 18px;
   color: var(--color-success);
 }
+.login-links {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.login-links .text {
+  color: #6b7280;
+}
+
+.login-links a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-links a:hover {
+  text-decoration: underline;
+}
+
+.login-links .divider {
+  margin: 0 6px;
+  color: #9ca3af;
+}

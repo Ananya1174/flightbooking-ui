@@ -13,12 +13,16 @@ import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
 import { loginGuard } from './guards/login.guard';
 import { passwordExpiredGuard } from './guards/password-expired.guard';
+import { ForgotPassword } from './auth/forgot-password/forgot-password';
+import { ResetPassword } from './auth/reset-password/reset-password';
 
 export const routes: Routes = [
   { path: '', component: Home },
 
   { path: 'login', component: Login, canActivate: [loginGuard] },
   { path: 'register', component: Register, canActivate: [loginGuard] },
+  { path: 'forgot-password', component: ForgotPassword, canActivate: [loginGuard] },
+{ path: 'reset-password', component: ResetPassword, canActivate: [loginGuard] },
 
   {
     path: 'search',
