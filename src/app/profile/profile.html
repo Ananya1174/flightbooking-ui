@@ -1,9 +1,6 @@
 <div class="account-page">
-
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <h3 class="sidebar-title">My Account</h3>
-
     <ul class="menu">
       <li
         [class.active]="activeSection === 'profile'"
@@ -11,42 +8,30 @@
         (click)="switchSection('profile')">
         My Profile
       </li>
-
       <li
         [class.active]="activeSection === 'password'"
         (click)="switchSection('password')">
         Change Password
       </li>
-
       <li class="disabled">Logged In Devices</li>
       <li class="disabled">Security</li>
     </ul>
   </aside>
-
-  <!-- CONTENT -->
   <section class="content">
-
-    <!-- 🔐 FORCE WARNING -->
     <div class="error" *ngIf="forcePasswordChange">
       ⚠️ Your password has expired. You must change it to continue using the application.
     </div>
-
-    <!-- PROFILE -->
     <div *ngIf="activeSection === 'profile'" class="card">
       <h2>My Profile</h2>
-
       <div class="info-row">
         <span>Email</span>
         <strong>{{ email || '—' }}</strong>
       </div>
-
       <div class="info-row">
         <span>Role</span>
         <strong>USER</strong>
       </div>
     </div>
-
-    <!-- CHANGE PASSWORD -->
     <div *ngIf="activeSection === 'password'" class="card">
       <h2>Change Password</h2>
 
@@ -68,8 +53,6 @@
           type="password"
           formControlName="newPassword"
           (input)="onNewPasswordInput()" />
-
-        <!-- PASSWORD POLICY -->
         <div class="password-hints" *ngIf="passwordStatus">
           <p [class.ok]="passwordStatus.length">✔ Minimum 12 characters</p>
           <p [class.ok]="passwordStatus.uppercase">✔ One uppercase letter</p>
@@ -78,7 +61,7 @@
           <p [class.ok]="passwordStatus.special">✔ One special character</p>
 
           <p *ngIf="sameAsOld" class="error">
-            ❌ New password must be different from current password
+             New password must be different from current password
           </p>
         </div>
 

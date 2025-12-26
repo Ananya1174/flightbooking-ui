@@ -22,15 +22,24 @@ export class AddFlightComponent {
 
   flightForm: FormGroup;
 
+  /** ✅ AIRPORT DROPDOWN DATA */
+  airports = [
+    { code: 'HYD', city: 'Hyderabad' },
+    { code: 'DEL', city: 'Delhi' },
+    { code: 'BLR', city: 'Bengaluru' },
+    { code: 'BOM', city: 'Mumbai' },
+    { code: 'MAA', city: 'Chennai' },
+    { code: 'CCU', city: 'Kolkata' },
+    { code: 'PNQ', city: 'Pune' },
+    { code: 'GOI', city: 'Goa' },
+  ];
+
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.flightForm = this.fb.group(
       {
         airline: ['', Validators.required],
 
-        airlineLogoUrl: [
-          '',
-          Validators.pattern(/^https?:\/\/.+/),
-        ],
+        airlineLogoUrl: ['', Validators.pattern(/^https?:\/\/.+/)],
 
         flightNumber: [
           '',
@@ -42,21 +51,8 @@ export class AddFlightComponent {
 
         tripType: ['ONEWAY', Validators.required],
 
-        origin: [
-          '',
-          [
-            Validators.required,
-            Validators.pattern(/^[A-Z]{3}$/),
-          ],
-        ],
-
-        destination: [
-          '',
-          [
-            Validators.required,
-            Validators.pattern(/^[A-Z]{3}$/),
-          ],
-        ],
+        origin: ['', Validators.required],
+        destination: ['', Validators.required],
 
         departureDate: ['', Validators.required],
         departureTime: ['', Validators.required],
@@ -65,20 +61,10 @@ export class AddFlightComponent {
 
         totalSeats: [
           null,
-          [
-            Validators.required,
-            Validators.min(1),
-            Validators.max(500),
-          ],
+          [Validators.required, Validators.min(1), Validators.max(500)],
         ],
 
-        price: [
-          null,
-          [
-            Validators.required,
-            Validators.min(1),
-          ],
-        ],
+        price: [null, [Validators.required, Validators.min(1)]],
       },
       {
         validators: [
@@ -88,6 +74,8 @@ export class AddFlightComponent {
       }
     );
   }
+
+  /** ✅ VALIDATIONS */
 
   arrivalAfterDeparture(group: FormGroup) {
     const dDate = group.get('departureDate')?.value;
@@ -111,6 +99,8 @@ export class AddFlightComponent {
     if (!o || !d) return null;
     return o !== d ? null : { sameRoute: true };
   }
+
+  /** ✅ SUBMIT */
 
   submit() {
     if (this.flightForm.invalid) {

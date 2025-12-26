@@ -86,7 +86,6 @@ export class Book implements OnInit {
     this.updatePassengers(count);
   }
 
-  /** ✅ Seat map → passenger seat binding */
   onSeatsSelected(seats: string[]) {
     seats.forEach((seat, index) => {
       if (this.passengers.at(index)) {

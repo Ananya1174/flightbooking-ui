@@ -33,8 +33,6 @@ export class Profile {
   loading = false;
   successMessage = '';
   errorMessage = '';
-
-  // 🔐 FORCE FLAG
   forcePasswordChange = false;
 
   constructor(
@@ -55,8 +53,6 @@ export class Profile {
     );
 
     this.email = this.auth.getUserEmail();
-
-    // 🔐 CHECK FORCE PASSWORD CHANGE
     this.route.queryParams.subscribe(params => {
       if (
         params['forcePasswordChange'] === 'true' ||
@@ -67,8 +63,6 @@ export class Profile {
       }
     });
   }
-
-  // 🔐 CONFIRM PASSWORD VALIDATOR
   passwordMatchValidator(form: AbstractControl) {
     const newPwd = form.get('newPassword')?.value;
     const confirmPwd = form.get('confirmPassword')?.value;
@@ -76,8 +70,6 @@ export class Profile {
     if (!newPwd || !confirmPwd) return null;
     return newPwd === confirmPwd ? null : { passwordMismatch: true };
   }
-
-  // 🔐 LIVE PASSWORD CHECK
   onNewPasswordInput() {
     const newPwd = this.passwordForm.value.newPassword || '';
     const oldPwd = this.passwordForm.value.oldPassword || '';
@@ -85,16 +77,12 @@ export class Profile {
     this.passwordStatus = checkPassword(newPwd);
     this.sameAsOld = newPwd && oldPwd && newPwd === oldPwd;
   }
-
-  // 🔐 BLOCK PROFILE CLICK
   switchSection(section: 'profile' | 'password') {
     if (this.forcePasswordChange && section === 'profile') {
-      return; // ❌ blocked
+      return; 
     }
     this.activeSection = section;
   }
-
-  // 🔐 CHANGE PASSWORD
   changePassword() {
     this.successMessage = '';
     this.errorMessage = '';
@@ -138,12 +126,8 @@ export class Profile {
           this.successMessage = msg;
           this.passwordForm.reset();
           this.passwordStatus = null;
-
-          // 🔐 CLEAR FORCE FLAG
           localStorage.removeItem('passwordChangeRequired');
-
           this.cdr.detectChanges();
-
           setTimeout(() => this.auth.signout(), 1500);
         },
         error: (err) => {
@@ -156,7 +140,6 @@ export class Profile {
           } else {
             this.errorMessage = 'Password update failed';
           }
-
           this.cdr.detectChanges();
         },
       });

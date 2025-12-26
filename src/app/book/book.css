@@ -4,7 +4,6 @@
   padding: 20px;
 }
 
-/* ✈️ FLIGHT SUMMARY */
 .flight-summary {
   display: flex;
   justify-content: space-between;
@@ -27,14 +26,12 @@
   color: var(--color-primary);
 }
 
-/* 🧱 MAIN LAYOUT */
 .booking-layout {
   display: grid;
   grid-template-columns: 1.3fr 1fr;
   gap: 24px;
 }
 
-/* 🪑 SEAT SECTION */
 .seat-section {
   background: var(--color-background-card);
   padding: 20px;
@@ -42,7 +39,6 @@
   box-shadow: 0 10px 30px var(--color-shadow);
 }
 
-/* 👤 PASSENGER SECTION */
 .passenger-section {
   background: var(--color-background-card);
   padding: 20px;
@@ -62,7 +58,6 @@
   width: 80px;
 }
 
-/* 👤 PASSENGER CARD */
 .passenger-card {
   background: var(--color-background-soft);
   padding: 16px;
@@ -93,8 +88,6 @@ select {
   border-radius: 8px;
   border: 1px solid var(--color-border);
 }
-
-/* ✅ CONFIRM */
 .confirm-btn {
   width: 100%;
   margin-top: 20px;
@@ -115,7 +108,7 @@ select {
   color: var(--color-danger);
   margin-top: 10px;
 }
-/* ✅ BOOKING SUCCESS */
+
 .booking-success {
   margin-top: 20px;
   padding: 18px;
@@ -136,7 +129,6 @@ select {
   font-size: 15px;
 }
 
-/* 📱 RESPONSIVE */
 @media (max-width: 900px) {
   .booking-layout {
     grid-template-columns: 1fr;

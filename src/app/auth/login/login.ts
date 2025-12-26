@@ -48,11 +48,8 @@ export class Login {
     this.auth.signin(payload).subscribe({
       next: (res) => {
         console.log('LOGIN RESPONSE', res);
-
-        // ✅ Save token + flags
         this.auth.saveToken(res.token);
 
-        // 🔐 PASSWORD EXPIRED FLOW
         if (res.passwordExpired === true) {
           this.message =
             '⚠️ Your password has expired. Please change it to continue.';

@@ -64,27 +64,39 @@
       <h3>Route</h3>
       <div class="grid">
         <div class="field">
-          <label>Origin</label>
-          <input formControlName="origin" />
-          <small *ngIf="flightForm.get('origin')?.touched && flightForm.get('origin')?.errors?.['required']">
-            This field is required
-          </small>
-          <small *ngIf="flightForm.get('origin')?.errors?.['pattern']">
-            Use IATA code (HYD)
-          </small>
-        </div>
+    <label>Origin</label>
+    <select formControlName="origin">
+      <option value="">Select origin</option>
+      <option
+        *ngFor="let a of airports"
+        [value]="a.code"
+        [disabled]="flightForm.get('destination')?.value === a.code">
+        {{ a.city }} ({{ a.code }})
+      </option>
+    </select>
+
+    <small *ngIf="flightForm.get('origin')?.touched && flightForm.get('origin')?.errors?.['required']">
+      Origin is required
+    </small>
+  </div>
 
         <div class="field">
-          <label>Destination</label>
-          <input formControlName="destination" />
-          <small *ngIf="flightForm.get('destination')?.touched && flightForm.get('destination')?.errors?.['required']">
-            This field is required
-          </small>
-          <small *ngIf="flightForm.get('destination')?.errors?.['pattern']">
-            Use IATA code (DEL)
-          </small>
-        </div>
-      </div>
+    <label>Destination</label>
+    <select formControlName="destination">
+      <option value="">Select destination</option>
+      <option
+        *ngFor="let a of airports"
+        [value]="a.code"
+        [disabled]="flightForm.get('origin')?.value === a.code">
+        {{ a.city }} ({{ a.code }})
+      </option>
+    </select>
+
+    <small *ngIf="flightForm.get('destination')?.touched && flightForm.get('destination')?.errors?.['required']">
+      Destination is required
+    </small>
+  </div>
+</div>
 
       <h3>Schedule</h3>
       <div class="grid">

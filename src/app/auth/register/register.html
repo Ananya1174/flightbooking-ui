@@ -2,7 +2,6 @@
 
   <div class="auth-card">
 
-    <!-- LEFT PANEL -->
     <div class="auth-left">
       <h1>Create Your Account</h1>
       <p>
@@ -12,14 +11,13 @@
       </p>
     </div>
 
-    <!-- RIGHT PANEL -->
     <div class="auth-right">
 
       <h2>Register</h2>
 
       <form [formGroup]="registerForm" (ngSubmit)="register()">
 
-        <!-- USERNAME -->
+  
         <label>Name</label>
         <input type="text" formControlName="username" />
 
@@ -29,7 +27,6 @@
           Name is required
         </small>
 
-        <!-- EMAIL -->
         <label>Email</label>
         <input type="email" formControlName="email" />
 
@@ -44,8 +41,6 @@
                  registerForm.get('email')?.hasError('email')">
           Enter a valid email address
         </small>
-
-        <!-- PASSWORD -->
         <label>Password</label>
         <input
           type="password"
@@ -59,7 +54,6 @@
           Password is required
         </small>
 
-        <!-- PASSWORD POLICY HINTS -->
         <div class="password-hints" *ngIf="passwordStatus">
           <p [class.ok]="passwordStatus.length">
             ✔ Minimum 12 characters
@@ -78,7 +72,6 @@
           </p>
         </div>
 
-        <!-- SUBMIT -->
         <button
           type="submit"
           [disabled]="registerForm.invalid || !passwordStatus?.valid">
@@ -87,7 +80,6 @@
 
       </form>
 
-      <!-- MESSAGE -->
       <p class="message">{{ message }}</p>
 
     </div>

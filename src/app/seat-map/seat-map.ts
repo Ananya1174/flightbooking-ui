@@ -38,13 +38,9 @@ export class SeatMapComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-
-    // 🔹 Load seats when flightId arrives
     if (changes['flightId'] && this.flightId) {
       this.loadSeats();
     }
-
-    // 🔹 Reset seats when passenger count changes
     if (changes['maxSelectableSeats'] && !changes['maxSelectableSeats'].firstChange) {
       this.selectedSeats = [];
       this.seatsSelected.emit([]);
@@ -62,7 +58,7 @@ export class SeatMapComponent implements OnChanges {
       .subscribe({
         next: res => {
           this.seats = res;
-          this.cdr.markForCheck(); // ✅ KEY LINE
+          this.cdr.markForCheck(); 
         },
         error: () => {
           this.seats = [];

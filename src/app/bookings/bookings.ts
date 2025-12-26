@@ -27,7 +27,7 @@ export class BookingsComponent implements OnInit {
   selectedBooking: any | null = null;
   cancelError: string | null = null;
 
-  // 🔒 ONE-CLICK LOCK
+
   isCancelling = false;
 
   private baseUrl =
@@ -115,7 +115,7 @@ export class BookingsComponent implements OnInit {
   closeCancelDialog() {
     this.selectedBooking = null;
     this.cancelError = null;
-    this.isCancelling = false; // 🔓 reset lock
+    this.isCancelling = false; 
   }
 
   confirmCancelBooking() {
@@ -138,8 +138,6 @@ export class BookingsComponent implements OnInit {
         // update UI state
         this.selectedBooking!.status = 'CANCELLED';
         this.applyFilter();
-
-        // ✅ CRITICAL FIX: defer dialog close
         Promise.resolve().then(() => {
           this.closeCancelDialog();
           this.cdr.detectChanges();

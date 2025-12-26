@@ -1,6 +1,4 @@
 <div class="booking-page" *ngIf="flight">
-
-  <!-- ✈️ FLIGHT SUMMARY -->
   <div class="flight-summary">
     <div>
       <h2>{{ flight.airlineName }}</h2>
@@ -12,8 +10,6 @@
   </div>
 
   <div class="booking-layout">
-
-    <!-- 🪑 SEAT MAP -->
     <section class="seat-section">
       <app-seat-map
         [flightId]="flightId"
@@ -21,8 +17,6 @@
         (seatsSelected)="onSeatsSelected($event)">
       </app-seat-map>
     </section>
-
-    <!-- 👤 PASSENGER DETAILS -->
     <section class="passenger-section">
 
       <form [formGroup]="bookingForm">
@@ -76,11 +70,8 @@
         </button>
 
       </form>
-
-      <!-- ❌ ERROR MESSAGE -->
       <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 
-      <!-- ✅ BOOKING SUCCESS -->
       <div *ngIf="bookingResponse" class="booking-success">
         <h3>🎉 Booking Confirmed</h3>
 
